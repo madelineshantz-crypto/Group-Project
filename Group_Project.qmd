@@ -62,8 +62,19 @@ total_lakes <- bind_rows(six_lakes, twelve_lakes)
 ###Data 2 (1-3 Sofia, 4-6 Maddy)
 Provide code for and address the following items as you get to know your data. Use the original data set(s) you downloaded to answer these questions:
 1. Who are the individuals under study in this data set? That is, what does each row of your data set correspond to? (These do not have to be people!)
+#The individuals under study in this data set are land-enclosed bodies of water in CT.
+distinct(six_lakes, Name)
+distinct(twelve_lakes, Name)
+
 2. How many individuals are in your study?
+#There are 152 individual land-enclosed bodies of water that we will be using for this project.
+count(six_lakes, Name)
+count(twelve_lakes, Name)
+
 3. Are there repeated measurements on individuals? (Such as measurements takenover time on the same individual?) 
+#Yes, there are repeated measurements on the land-enclosed bodies of water in CT between the 2006 and 2012 datasets. 
+intersect(names(six_lakes), names(twelve_lakes)
+
 4. How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
 ``` {r}
 summary(2012.csv)
