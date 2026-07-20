@@ -15,24 +15,12 @@ Class: **Data-412**
 ### **Data Sets:**
 
 - 305b assessed 2012 lake
-
-- 305b assessed lake 2016
-
 - 305b assessed 2006 lake
 
-- 305b assessed lake 2018
-
-- 305b assessed 2008 lake
-
-- 305b assessed 2010 lake
-
-- 305b assessed lake 2020
-
-- 305b assessed 2014 lake
 
 The datasets include: OBJECTID, CT LAKE ID, 305B ID, Name, Location, Acres, Aquatic Life, Recreation, Fish Consumption, Cycle, Drinking Water Supply, Shape_Area, and Shape_Length
 
-## Description of the problems/questions addressed <- A description of the problem/questions to be addressed.
+## Description of the problems/questions addressed (Abby and Sofia) <- A description of the problem/questions to be addressed.
 
 Make them specific and connect to measures in your data set. Where appropriate, write
 
@@ -44,7 +32,7 @@ these as formal tests of hypotheses.
 
 3.  How have the length and area changed over time?
 
-## Peer-reviewed articles:
+## Peer-reviewed articles: (Covered by Maddy)
 
 #### [Concerns and Threats of Contamination on Aquatic Ecosystems](https://pmc.ncbi.nlm.nih.gov/articles/PMC7121614/)
 
@@ -59,12 +47,15 @@ Authors: Stephen R. Carpenter, Emily H. Stanley, and M. Jake Vander Zanden
 ```         
 ```
 
-###Data 1
+###Data 1 
 Evidence that you have downloaded the data you will work on. Give the source(s) with
 
 link(s) to your data and explore some features of the raw data set(s).
 
-###Data 2
+insert data sets
+try a filter / mutuate / merge function to combine the data sets OR describe how you would do that
+
+###Data 2 (Maddy)
 Provide code for and address the following items as you get to know your data. Use the original data set(s) you downloaded to answer these questions:
 1. Who are the individuals under study in this data set? That is, what does each row of your data set correspond to? (These do not have to be people!)
 2. How many individuals are in your study?
