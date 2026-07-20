@@ -32,7 +32,11 @@ Class: **Data-412**
 
 The datasets include: OBJECTID, CT LAKE ID, 305B ID, Name, Location, Acres, Aquatic Life, Recreation, Fish Consumption, Cycle, Drinking Water Supply, Shape_Area, and Shape_Length
 
-## Description of the problems/questions addressed
+## Description of the problems/questions addressed <- A description of the problem/questions to be addressed.
+
+Make them specific and connect to measures in your data set. Where appropriate, write
+
+these as formal tests of hypotheses.
 
 1.  How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
 
@@ -55,11 +59,40 @@ Authors: Stephen R. Carpenter, Emily H. Stanley, and M. Jake Vander Zanden
 ```         
 ```
 
-Criterion Long Description
+###Data 1
+Evidence that you have downloaded the data you will work on. Give the source(s) with
 
+link(s) to your data and explore some features of the raw data set(s).
+
+###Data 2
 Provide code for and address the following items as you get to know your data. Use the original data set(s) you downloaded to answer these questions:
 1. Who are the individuals under study in this data set? That is, what does each row of your data set correspond to? (These do not have to be people!)
 2. How many individuals are in your study?
 3. Are there repeated measurements on individuals? (Such as measurements takenover time on the same individual?)- 4. How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
 5. What data tidying steps do you anticipate having to do to get a clean data set forthe remaining analyses?
 6. For some groups, how do you plan to combine from different data sets?
+
+
+## Member's tasks
+
+Give details on who is expected to be responsible for these next projects steps and when
+
+you anticipate working on them (note that multiple people can be responsible for the
+
+same step):
+
+– Data preparation: Cleaning and tidying the data
+
+– Statistical Methods: EDA and any statistical analyses
+
+– Producing the group report
+
+– Producing the group presentation
+
+– Rehearsing the presentation
+
+– A list of who is responsible for submitting which deliverables in Canvas.
+
+
+
+
