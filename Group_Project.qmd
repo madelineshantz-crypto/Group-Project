@@ -38,7 +38,7 @@ these as formal tests of hypotheses.
 
 Authors: [Ishrat Bashir](https://pubmed.ncbi.nlm.nih.gov/?term=%22Bashir%20I%22%5BAuthor%5D) ^4,✉^, [F A Lone](https://pubmed.ncbi.nlm.nih.gov/?term=%22Lone%20FA%22%5BAuthor%5D) ^4^, [Rouf Ahmad Bhat](https://pubmed.ncbi.nlm.nih.gov/?term=%22Bhat%20RA%22%5BAuthor%5D) ^4^, [Shafat A Mir](https://pubmed.ncbi.nlm.nih.gov/?term=%22Mir%20SA%22%5BAuthor%5D) ^4^, [Zubair A Dar](https://pubmed.ncbi.nlm.nih.gov/?term=%22Dar%20ZA%22%5BAuthor%5D) ^4^, [Shakeel Ahmad Dar](https://pubmed.ncbi.nlm.nih.gov/?term=%22Dar%20SA%22%5BAuthor%5D) ^4^
 
-**Brief Summary:** water contamination is the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse if pesticides and fertilizers and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
+**Brief Summary:** water contamination is the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
 
 #### State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
 
