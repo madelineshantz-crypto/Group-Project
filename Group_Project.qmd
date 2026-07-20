@@ -1,0 +1,65 @@
+---
+title: "Group Project"
+format: html
+editor: visual
+---
+
+## Introduction
+
+Title for the project: Review of Connecticut's Lake systems focusing in geography, aquatic life, and regional impact.
+
+Group Members: Maddy Shantz, Abby Nolan, Sofia Gee
+
+Class: **Data-412**
+
+### **Data Sets:**
+
+- 305b assessed 2012 lake
+
+- 305b assessed lake 2016
+
+- 305b assessed 2006 lake
+
+- 305b assessed lake 2018
+
+- 305b assessed 2008 lake
+
+- 305b assessed 2010 lake
+
+- 305b assessed lake 2020
+
+- 305b assessed 2014 lake
+
+The datasets include: OBJECTID, CT LAKE ID, 305B ID, Name, Location, Acres, Aquatic Life, Recreation, Fish Consumption, Cycle, Drinking Water Supply, Shape_Area, and Shape_Length
+
+## Description of the problems/questions addressed
+
+1.  How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+2.  Do the regions where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+3.  How have the length and area changed over time?
+
+## Peer-reviewed articles:
+
+#### [Concerns and Threats of Contamination on Aquatic Ecosystems](https://pmc.ncbi.nlm.nih.gov/articles/PMC7121614/)
+
+Authors: [Ishrat Bashir](https://pubmed.ncbi.nlm.nih.gov/?term=%22Bashir%20I%22%5BAuthor%5D) ^4,✉^, [F A Lone](https://pubmed.ncbi.nlm.nih.gov/?term=%22Lone%20FA%22%5BAuthor%5D) ^4^, [Rouf Ahmad Bhat](https://pubmed.ncbi.nlm.nih.gov/?term=%22Bhat%20RA%22%5BAuthor%5D) ^4^, [Shafat A Mir](https://pubmed.ncbi.nlm.nih.gov/?term=%22Mir%20SA%22%5BAuthor%5D) ^4^, [Zubair A Dar](https://pubmed.ncbi.nlm.nih.gov/?term=%22Dar%20ZA%22%5BAuthor%5D) ^4^, [Shakeel Ahmad Dar](https://pubmed.ncbi.nlm.nih.gov/?term=%22Dar%20SA%22%5BAuthor%5D) ^4^
+
+**Brief Summary:** water contamination is the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse if pesticides and fertilizers and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
+
+#### State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
+
+Authors: Stephen R. Carpenter, Emily H. Stanley, and M. Jake Vander Zanden
+
+```         
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
