@@ -59,7 +59,8 @@ try a filter / mutuate / merge function to combine the data sets OR describe how
 Provide code for and address the following items as you get to know your data. Use the original data set(s) you downloaded to answer these questions:
 1. Who are the individuals under study in this data set? That is, what does each row of your data set correspond to? (These do not have to be people!)
 2. How many individuals are in your study?
-3. Are there repeated measurements on individuals? (Such as measurements takenover time on the same individual?) 4. How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
+3. Are there repeated measurements on individuals? (Such as measurements takenover time on the same individual?) 
+4. How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
 5. What data tidying steps do you anticipate having to do to get a clean data set forthe remaining analyses?
 6. For some groups, how do you plan to combine from different data sets?
 
