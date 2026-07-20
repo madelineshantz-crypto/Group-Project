@@ -72,17 +72,17 @@ you anticipate working on them (note that multiple people can be responsible for
 
 same step):
 
-– Data preparation: Cleaning and tidying the data
+– Data preparation: Cleaning and tidying the data (Sofia, Abby, Maddy - due Friday, Julyn 24th, will specify what we work on as we complete this step)
 
-– Statistical Methods: EDA and any statistical analyses
+– Statistical Methods: EDA and any statistical analyses (Shared, due July 31)
 
-– Producing the group report
+– Producing the group report (shared effort, broken down by sections worked on in data preparation, due August 9th)
 
-– Producing the group presentation
+– Producing the group presentation (shared based on what parted each person worked on, due August 7th)
 
-– Rehearsing the presentation
+– Rehearsing the presentation (shared, due Aug 7th)
 
-– A list of who is responsible for submitting which deliverables in Canvas.
+– A list of who is responsible for submitting which deliverables in Canvas. (Maddy will submit the progress report, Abby will submit the slides and Sofia will submit the report on August 9th)
 
 
 
