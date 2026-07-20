@@ -42,8 +42,7 @@ Authors: [Ishrat Bashir](https://pubmed.ncbi.nlm.nih.gov/?term=%22Bashir%20I%22%
 
 Authors: Stephen R. Carpenter, Emily H. Stanley, and M. Jake Vander Zanden
 
-```         
-```
+The large-scale changes in freshwater including physical, chemical and biological are associated with human factors, yet there is a lack of addressing the institutional aspects of water management. This paper aims to discuss the natural science aspects of freshwater resources while trying to emphasie the comprehensive approach that is needed to sustaining freshwater resources. 
 
 ###Data 1 
 Evidence that you have downloaded the data you will work on. Give the source(s) with
