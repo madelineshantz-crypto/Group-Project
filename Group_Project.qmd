@@ -14,8 +14,8 @@ Class: **Data-412**
 
 ### **Data Sets:**
 
-- 305b assessed 2012 lake
-- 305b assessed 2006 lake
+- 305b assessed 2012 lake (2012.csv)
+- 305b assessed 2006 lake (2006.csv)
 
 
 The datasets include: OBJECTID, CT LAKE ID, 305B ID, Name, Location, Acres, Aquatic Life, Recreation, Fish Consumption, Cycle, Drinking Water Supply, Shape_Area, and Shape_Length
