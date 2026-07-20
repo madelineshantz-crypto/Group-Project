@@ -38,7 +38,7 @@ Authors: [Ishrat Bashir](https://pubmed.ncbi.nlm.nih.gov/?term=%22Bashir%20I%22%
 
 **Brief Summary:** water contamination is the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
 
-#### State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
+#### [State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes](https://www.annualreviews.org/content/journals/10.1146/annurev-environ-021810-094524)
 
 Authors: Stephen R. Carpenter, Emily H. Stanley, and M. Jake Vander Zanden
 
