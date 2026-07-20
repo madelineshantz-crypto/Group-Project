@@ -65,11 +65,14 @@ Provide code for and address the following items as you get to know your data. U
 2. How many individuals are in your study?
 3. Are there repeated measurements on individuals? (Such as measurements takenover time on the same individual?) 
 4. How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
-
+``` {r}
+summary(2012.csv)
+```
+The variables that are of interest to us are the aquatic life, drinking water supply, location, shape_area and shape_langth. The aquatic life and drinking water supply variables are esssential  to the first question that asks about the correlation of the two variables during the year 2006 and 2012. We want to see if there is a correlation between the water being potable, and there being a dense aquatic life presence. We then want to deepen our initial question by seeing if the location variable has any impact on the drinking water supply and the aquatic life variables. For example, if the water is located in Bridgeport versus Ridgefield, does that impact the outcome of the first question. 
 5. What data tidying steps do you anticipate having to do to get a clean data set for the remaining analyses?
   I believe that we will have to filter some of the columns to get the data necessary. We will also have to rule out the data points that are classified as N/A, which we can do through using the the filter() function and the drop_na() function. 
 6. For some groups, how do you plan to combine from different data sets?
-
+  We are stacking the data sets to combine them. This will make it easiest to compare the data that we are looking to evaluate
 
 ## Member's tasks
 
