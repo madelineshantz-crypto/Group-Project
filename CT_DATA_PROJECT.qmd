@@ -117,7 +117,7 @@ table(total_lakes$`Drinking Water Supply`)
 ```
 
 ```{r}
-lake_correlation <- total_lakes |>
+lakes_mutated <- total_lakes |>
   filter(Cycle == 2006 | Cycle == 2012) |>
   mutate(
     across(c(`Aquatic Life`, `Drinking Water Supply`), ~ case_when(
@@ -127,7 +127,10 @@ lake_correlation <- total_lakes |>
       .x == "Not Evaluated In 2006" ~ 2,
       .x == "Water Not Classified For Drinking Supply" ~ 1
     ))
-  ) |>
+  )
+lakes_mutated
+
+lake_correlations <- lakes_mutated |>
   group_by(`Cycle`) |>
   summarize(correlation = if(sd(`Aquatic Life`, na.rm = TRUE) > 0 & sd(`Drinking Water Supply`, na.rm = TRUE) > 0) {
     cor(`Aquatic Life`, `Drinking Water Supply`, use = "complete.obs")
@@ -135,13 +138,13 @@ lake_correlation <- total_lakes |>
     NA_real_
   }
   )
-print(lake_correlation)
+print(lake_correlations)
 ```
 
 ## Question 2: Do the towns where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
 ```{r}
-total_lakes_regions <- total_lakes |>
+total_lakes_regions <- lakes_mutated |>
   separate_wider_regex(
     cols = Name,
     patterns = c(name = ".*?", " \\(", place = ".*?", "\\)"),
@@ -151,12 +154,13 @@ total_lakes_regions
 ```
 
 ```{r}
-total_lakes_regions <- total_lakes_regions |>
+water_impact <- total_lakes_regions |>
   group_by(place) |>
   summarise(
     mean_aquatic = mean(`Aquatic Life`, na.rm = TRUE),
     mean_drinking = mean(`Drinking Water Supply`, na.rm = TRUE)
   )
+water_impact
 ```
 
 ## Question 3: How have the length and area changed over time?
