@@ -9,7 +9,6 @@ echo: false
 options(styler.save_after_styling = TRUE)
 library(tidyverse)
 library(ggplot2)
-install.packages("naniar")
 library(naniar)
 ```
 

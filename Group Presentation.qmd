@@ -151,7 +151,9 @@ water_impact <- total_lakes_regions |>
 water_impact
 ```
 
-### Question 3: How have the length and area changed over time?
+### Question 3: What lake has changed the most regarding length and area in the years of 2006 to 2012?
+
+### How have the length and area changed over time?
 
 ```{r}
 
