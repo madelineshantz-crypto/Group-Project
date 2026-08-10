@@ -1,5 +1,5 @@
 ---
-title: "Review of Connecticut's Lake systems focusing in geography, aquatic life, and regional impact - Data 412."
+title: "Review of Connecticut's Lake systems focusing in geography, aquatic life, and regional impact."
 author: "Maddy Shantz, Abby Nolan, Sophia Gee"
 format: typst
 editor: visual
@@ -17,17 +17,21 @@ library(naniar)
 
 ### Background and Data Origin
 
-Are the measures quantitative or categorical? Are there other types of variables in your data set?
+The individuals under study in this data set are land-enclosed bodies of water in CT. distinct(six_lakes, Name) distinct(twelve_lakes, Name). There are 152 individual land-enclosed bodies of water that we will be using for this project. count(six_lakes, Name) count(twelve_lakes, Name). There are repeated measurements on the land-enclosed bodies of water in CT between the 2006 and 2012 datasets, intersect(names(six_lakes), names(twelve_lakes).
 
 The dataset contains both quantitative and categorical measures. The quantitative variables are the acres, shape_area, and shape_length. The categorical variables are the object ID, 305B ID, Name, Location, Aquatic Life, Recreation, fish consumption, cycle, and drinking water supply. The variables that we are specifically looking at are the Name, Cycle, Aquatic Life, and Drinking Water Supply, which are all categorical variables.
 
+The variables that are of interest to us are the aquatic life, drinking water supply, location, shape_area and shape_length. The aquatic life and drinking water supply variables are essential to the first question that asks about the correlation of the two variables during the year 2006 and 2012. We want to see if there is a correlation between the water being potable, and there being a dense aquatic life presence. We then want to deepen our initial question by seeing if the location variable has any impact on the drinking water supply and the aquatic life variables. For example, if the water is located in Bridgeport versus Ridgefield, does that impact the outcome of the first question.
+
 ### Literature Review
+
+#### Concerns and Threats of Contamination on Aquatic Ecosystems
 
 @bashir2020
 
-**Brief Summary:** The book "Bioremediation and Biotechnology: Sustainable Approaches to Pullotion Degradation" includes a chapter entitled 'Concerns and Threats of Contamination on Aquatic Ecosystems' that defined water contamination as the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
+**Brief Summary:** The book "Bio-remediation and Biotechnology: Sustainable Approaches to Pollution Degradation" includes a chapter entitled 'Concerns and Threats of Contamination on Aquatic Ecosystems' that defined water contamination as the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
 
-State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
+#### State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
 
 @carpenter2011
 
@@ -40,14 +44,6 @@ State the overall research goals/questions. Where did you find this data? Who or
 Our main research goals were to explore the correlation of aquatic life support and drinking water supply in the years 2006 and 2012, determine if there is a regional impact on the aquatic life support and drinking water supply correlation, and determine how have the length and area of the lakes changed over time.
 
 This data is located on the Connecticut Open Data website and the Department of Energy and Environmental Protection originally collected this data to assess rivers, lakes, and estuaries in 2006 and 2012 to comply with sections 305(b) and 303(d) of the federal Clean Water Act. Section 305(b) of the Clean Water Act "requires each state to monitor, assess and report on the quality of its waters relative to attainment of designated uses established by the State's water quality standards". Section 303(d) "requires each State to compile a subset of that list identifying only those waters not meeting water quality standards and assign a Total Maximum Daily Load (TMDL) priority ranking to each impaired waterbody". The scale of the data is compiled at a 1:24,000 scale.
-
-The individuals under study in this data set are land-enclosed bodies of water in CT. distinct(six_lakes, Name) distinct(twelve_lakes, Name). There are 152 individual land-enclosed bodies of water that we will be using for this project. count(six_lakes, Name) count(twelve_lakes, Name)
-
-There are repeated measurements on the land-enclosed bodies of water in CT between the 2006 and 2012 datasets. intersect(names(six_lakes), names(twelve_lakes)
-
-2.  How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
-
-The variables that are of interest to us are the aquatic life, drinking water supply, location, shape_area and shape_length. The aquatic life and drinking water supply variables are essential to the first question that asks about the correlation of the two variables during the year 2006 and 2012. We want to see if there is a correlation between the water being potable, and there being a dense aquatic life presence. We then want to deepen our initial question by seeing if the location variable has any impact on the drinking water supply and the aquatic life variables. For example, if the water is located in Bridgeport versus Ridgefield, does that impact the outcome of the first question.
 
 ## Initial Hypotheses:
 
@@ -77,8 +73,6 @@ There is an association between the regions where the lakes are located and the 
 
 Describe the features of your data using numerical and graphical summaries. Do not just include all possible plots but select important graphs and numerical summaries. Be sure to include discussion of what these plots tell you about your data and any preliminary evidence they suggest about your hypotheses.
 
-Background:
-
 ```{r}
 twelve_lakes <- read_csv("2012.csv")
 six_lakes    <- read_csv("2006.csv")
@@ -93,15 +87,42 @@ total_lakes <- bind_rows(six_lakes_aligned, twelve_lakes_aligned) |>
 total_lakes
 ```
 
-Question 1
+### Question 1: How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
 
 ```{r}
-twelve_lakes <- read_csv("2012.csv")
-six_lakes <- read_csv("2006.csv")
-total_lakes <- bind_rows(six_lakes, twelve_lakes)
+table(total_lakes$`Aquatic Life`)
 ```
 
-Question 2:
+```{r}
+table(total_lakes$`Drinking Water Supply`)
+```
+
+```{r}
+lakes_mutated <- total_lakes |>
+  filter(Cycle == 2006 | Cycle == 2012) |>
+  mutate(
+    across(c(`Aquatic Life`, `Drinking Water Supply`), ~ case_when(
+      .x == "Fully Supporting" ~ 5,
+      .x == "Not Supporting" ~ 4,
+      .x == "Not Assessed" ~ 3,
+      .x == "Not Evaluated In 2006" ~ 2,
+      .x == "Water Not Classified For Drinking Supply" ~ 1
+    ))
+  )
+lakes_mutated
+
+lake_correlations <- lakes_mutated |>
+  group_by(`Cycle`) |>
+  summarize(correlation = if(sd(`Aquatic Life`, na.rm = TRUE) > 0 & sd(`Drinking Water Supply`, na.rm = TRUE) > 0) {
+    cor(`Aquatic Life`, `Drinking Water Supply`, use = "complete.obs")
+  } else {
+    NA_real_
+  }
+  )
+print(lake_correlations)
+```
+
+### Question 2: Do the towns where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
 ```{r}
 total_lakes_regions <- lakes_mutated |>
@@ -123,7 +144,50 @@ water_impact <- total_lakes_regions |>
 water_impact
 ```
 
-Question 3:
+```{r}
+district_1 <- water_impact |> 
+  filter(place %in% c(
+    "Barkhamsted", "Berlin", "Bloomfield", "Bristol", "Colebrook", 
+    "Cromwell", "East Granby", "East Windsor", "Glastonbury (partial)", 
+    "Granby", "Hartford", "Hartland", "Manchester", "Middletown (partial)", 
+    "New Hartford", "Newington", "Portland", "Rocky Hill", "South Windsor", 
+    "Southington", "West Hartford", "Wethersfield", "Winchester", 
+    "Windsor", "Windsor Locks"
+  )) |> 
+  group_by(place)
+district_1
+```
+
+```{r}
+district_2 <- water_impact |> 
+  filter(place %in% c("Andover", "Ashford", "Bolton", "Bozrah", "Brooklyn", "Canterbury", "Chaplin", "Chester", "Clinton", "Colchester", "Columbia", "Coventry", "Deep River", "Durham", "Eastford", "East Haddam", "East Hampton", "East Lyme", "Ellington", "Enfield", "Essex", "Franklin", "Griswold", "Groton", "Haddam", "Hampton", "Hebron", "Killingly", "Lebanon", "Ledyard", "Lisbon", "Madison", "Mansfield", "Marlborough", "Montville", "New London", "North Stonington", "Norwich", "Old Lyme", "Old Saybrook", "Plainfield", "Pomfret", "Preston", "Putnam", "Salem", "Scotland", "Somers", "Sprague", "Stafford", "Sterling", "Stonington", "Suffield", "Thompson", "Tolland", "Union", "Vernon", "Voluntown", "Waterford", "Westbrook", "Willington", "Windham", "Woodstock"
+  )) |> 
+  group_by(place)
+district_2
+```
+
+```{r}
+district_3 <- water_impact |>
+  filter(place %in% c("Ansonia", "Beacon Falls", "Bethany", "Branford", "Cheshire", "Derby", "East Haven", "Guilford", "Hamden", "Middlebury", "Middletown (partial)", "Milford", "Naugatuck", "New Haven", "North Branford", "North Haven", "Orange", "Prospect", "Seymour", "Stratford", "Wallingford", "Waterbury (partial)", "West Haven", "Woodbridge")) |>
+  group_by(place)
+district_3
+```
+
+```{r}
+district_4 <- water_impact |>
+  filter(place %in% c("Bridgeport", "Darien", "Easton", "Fairfield", "Greenwich", "Monroe", "New Canaan", "Norwalk", "Oxford", "Redding", "Ridgefield", "Shelton", "Sherman", "Stamford", "Trumbull", "Weston", "Westport", "Wilton")) |>
+  group_by(place)
+district_4
+```
+
+```{r}
+district_5 <- water_impact |>
+  filter(place %in% c("Avon", "Bethel", "Bethlehem", "Bridgewater", "Brookfield", "Burlington", "Canaan", "Canton", "Cheshire", "Cornwall", "Danbury", "Farmington", "Goshen", "Harwinton", "Kent", "Litchfield", "Meriden", "Middlebury", "Morris", "New Britain", "New Fairfield", "New Milford", "Newtown", "Norfolk", "North Canaan", "Plainville", "Plymouth", "Roxbury", "Salisbury", "Sharon", "Sherman", "Simsbury", "Southbury", "Thomaston", "Torrington", "Warren", "Washington", "Waterbury", "Watertown", "Wolcott", "Woodbury")) |>
+  group_by(place)
+district_5
+```
+
+### Question 3: How have the length and area changed over time?
 
 ```{r}
 lakes_change <- six_lakes_aligned |>
@@ -153,6 +217,12 @@ A brief discussion of your results and how they may be placed in the context of 
 
 A list of references cited in your report. Use a standard format for references (such as APA or MLA style).
 
+Bashir, I., Lone, F. A., Bhat, R. A., Mir, S. A., Dar, Z. A., & Dar, S. A. (2020). Concerns and Threats of Contamination on Aquatic Ecosystems. Bioremediation and Biotechnology: Sustainable Approaches to Pollution Degradation, 1–26. https://doi.org/10.1007/978-3-030-35691-0_1
+
+Stephen R. Carpenter, Emily H. Stanley, M. Jake Vander Zanden. 2011. State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes. Annual Review of Environment and Resources 36:75-99. https://doi.org/10.1146/annurev-environ-021810-094524
+
+[@carpenter2011] [@bashir2020a]
+
 ## Appendix:
 
-Include whatever you feel needs to be included but doesn’t fit in with the above. This could include additional R code not included in the main text.Include a detailed enough description of how you got your data set so someone else could find the same date set. Give web links and/or instructions.
+Include whatever you feel needs to be included but doesn’t fit in with the above. This could include additional R code not included in the main text. Include a detailed enough description of how you got your data set so someone else could find the same date set. Give web links and/or instructions.
