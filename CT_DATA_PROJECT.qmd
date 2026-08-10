@@ -163,6 +163,17 @@ water_impact
 ```
 
 ## Question 3: How have the length and area changed over time?
+```{r}
+lakes_change <- six_lakes_aligned |>
+   left_join(
+      twelve_lakes_aligned,
+      by = "305B ID",
+      suffix = c("_2006", "_2012")
+   )
+lakes_change <- lakes_change |> 
+select(Name_2006, Name_2012, Shape__Length_2006, Shape__Length_2012, Shape__Area_2006, Shape__Area_2012) |>
+mutate(length_ratio = Shape__Length_2012 / Shape__Length_2006,area_ratio = Shape__Area_2012 / Shape__Area_2006)
+```
 
 ## Member's Tasks
 
