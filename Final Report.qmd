@@ -8,9 +8,25 @@ bibliography: references.bib
 
 ## Introduction
 
+### Background and Data Origin
+
 Are the measures quantitative or categorical? Are there other types of variables in your data set?
 
 The dataset contains both quantitative and categorical measures. The quantitative variables are the acres, shape_area, and shape_length. The categorical variables are the object ID, 305B ID, Name, Location, Aquatic Life, Recreation, fish consumption, cycle, and drinking water supply. The variables that we are specifically looking at are the Name, Cycle, Aquatic Life, and Drinking Water Supply, which are all categorical variables.
+
+### Literature Review
+
+@bashir2020
+
+**Brief Summary:** The book "Bioremediation and Biotechnology: Sustainable Approaches to Pullotion Degradation" includes a chapter entitled 'Concerns and Threats of Contamination on Aquatic Ecosystems' that defined water contamination as the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
+
+State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
+
+@carpenter2011
+
+In the "Annual Review of Environment and Resources" the section 'State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes' discusses the large-scale changes in freshwater. This includes physical, chemical and biological are associated with human factors, yet there is a lack of addressing the institutional aspects of water management. This paper aims to discuss the natural science aspects of freshwater resources while trying to emphasize the comprehensive approach that is needed to sustaining freshwater resources.
+
+### Research Goals and Questions
 
 State the overall research goals/questions. Where did you find this data? Who originally collected this data? For what purpose?
 
@@ -26,21 +42,29 @@ There are repeated measurements on the land-enclosed bodies of water in CT betwe
 
 The variables that are of interest to us are the aquatic life, drinking water supply, location, shape_area and shape_length. The aquatic life and drinking water supply variables are essential to the first question that asks about the correlation of the two variables during the year 2006 and 2012. We want to see if there is a correlation between the water being potable, and there being a dense aquatic life presence. We then want to deepen our initial question by seeing if the location variable has any impact on the drinking water supply and the aquatic life variables. For example, if the water is located in Bridgeport versus Ridgefield, does that impact the outcome of the first question.
 
-You should include a brief literature review. For the literature review, you should find peer-review articles related to the topic.
-
-@bashir2020
-
-**Brief Summary:** The book "Bioremediation and Biotechnology: Sustainable Approaches to Pullotion Degradation" includes a chapter entitled 'Concerns and Threats of Contamination on Aquatic Ecosystems' that defined water contamination as the outcome associated with human activities like urbanization, industrialization, and agricultural activities. Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas. There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
-
-State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
-
-@carpenter2011
-
-In the "Annual Review of Environment and Resources" the section 'State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes' discusses the large-scale changes in freshwater. This includes physical, chemical and biological are associated with human factors, yet there is a lack of addressing the institutional aspects of water management. This paper aims to discuss the natural science aspects of freshwater resources while trying to emphasize the comprehensive approach that is needed to sustaining freshwater resources.
-
 ## Initial Hypotheses:
 
 Provide a list of detailed hypotheses. For example, you might believe that a certain variable is associated with poverty — or that this association is only mediated through a third variable. Be as precise as possible, stating your hypotheses in terms of population quantities such as means, proportions, correlations, or model parameters.
+
+1.  How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+H₀: ρ=0\rho = 0ρ=0
+
+There is no association between aquatic life support and drinking water supply among Connecticut lakes.
+
+Hₐ: ρ≠0\rho \neq 0ρ=0
+
+There is an association between aquatic life support and drinking water supply among Connecticut lakes.
+
+2.  Do the regions where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+H₀: ρ=0\rho = 0ρ=0 There is no association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+
+Hₐ: ρ≠0\rho \neq 0ρ=0
+
+There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+
+3.  How have the length and area changed over time?
 
 ## Exploratory Data Analysis:
 
