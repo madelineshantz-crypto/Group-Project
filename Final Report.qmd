@@ -215,7 +215,7 @@ A brief discussion of your results and how they may be placed in the context of 
 
 ## References:
 
-A list of references cited in your report. Use a standard format for references (such as APA or MLA style).
+\*She prefers APA
 
 Bashir, I., Lone, F. A., Bhat, R. A., Mir, S. A., Dar, Z. A., & Dar, S. A. (2020). Concerns and Threats of Contamination on Aquatic Ecosystems. Bioremediation and Biotechnology: Sustainable Approaches to Pollution Degradation, 1–26. https://doi.org/10.1007/978-3-030-35691-0_1
 
