@@ -88,6 +88,8 @@ Hₐ: ρ≠0\rho \neq 0ρ=0
 There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
 
 3.  How have the length and area changed over time?
+H₀: Lake length and area is the same between 2006 and 2012.
+Hₐ: Lake length and area differs between 2006 and 2012. 
 
 ## Data 1 Evidence that you have downloaded the data you will work on. Give the source(s) with link(s) to your data and explore some features of the raw data set(s).
 
