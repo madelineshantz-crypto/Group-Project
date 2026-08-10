@@ -5,23 +5,20 @@ format: typst
 editor: visual
 ---
 
-## Quarto
+## Introduction
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Are the measures quantitative or categorical? Are there other types of variables in your data set? State the overall research goals/questions. Where did you find this data? Who originally collected this data? For what purpose? You should include a brief literature review. For the literature review, you should find peer-review articles related to the topic.
 
-## Running Code
+Initial Hypotheses: Provide a list of detailed hypotheses. For example, you might believe that a certain variable is associated with poverty — or that this association is only mediated through a third variable. Be as precise as possible, stating your hypotheses in terms of population quantities such as means, proportions, correlations, or model parameters.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Exploratory Data Analysis: Describe the features of your data using numerical and graphical summaries. Do not just include all possible plots but select important graphs and numerical summaries. Be sure to include discussion of what these plots tell you about your data and any preliminary evidence they suggest about your hypotheses.
 
-```{r}
-1 + 1
-```
+5\. Statistical Methods, Modeling, and Results: Include your formal statistical analyses such as a formal hypothesis test and modeling. Include your assessment of the assumptions of your methods, with necessary adjustments.
 
-You can add options to executable code like this
+6\. Data-driven Questions: What new questions (or hypotheses) have you developed as you explored the data? Provide some description of things that you found interesting when you were looking at the data.
 
-```{r}
-#| echo: false
-2 * 2
-```
+7\. Discussion: A brief discussion of your results and how they may be placed in the context of the literature.
 
-The `echo: false` option disables the printing of code (only output is displayed).
+8\. References: A list of references cited in your report. Use a standard format for references (such as APA or MLA style).
+
+9\. Appendix: Include whatever you feel needs to be included but doesn’t fit in with the above. This could include additional R code not included in the main text.Include a detailed enough description of how you got your data set so someone else could find the same date set. Give web links and/or instructions.
