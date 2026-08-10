@@ -1,0 +1,187 @@
+---
+title: "Group Presentation"
+author: "Maddy Shantz, Abby Nolan, and Sophia Gee"
+format: pptx
+editor: visual
+echo: false
+---
+
+## Introduction
+
+#### Concerns and Threats of Contamination on Aquatic Ecosystems
+
+@bashir2020
+
+- Water contamination is the outcome associated with human activities like urbanization, industrialization, and agricultural activities.
+
+- Specific contaminants are from the overuse of pesticides, fertilizers, and sewage from industrial and residential areas.
+
+- There is a need for regular monitoring and controlling of pollutant discharge into the nearby aquatic environs.
+
+#### State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes
+
+@carpenter2011
+
+- The large-scale changes in freshwater includes physical, chemical and biological aspects that are associated with human factors, yet there is a lack of addressing the institutional aspects of water management.
+
+- This paper aims to discuss the natural science aspects of freshwater resources while trying to emphasize the comprehensive approach that is needed to sustaining freshwater resources.
+
+### add this stuff into the intro \>\> \### Data 2 (1-3 Sofia, 4-6 Maddy) Provide code for and address the following items as you get to know your data. Use the original data set(s) you downloaded to answer these questions:
+
+1.  Who are the individuals under study in this data set? That is, what does each row of your data set correspond to? (These do not have to be people!)
+
+    - The individuals under study in this data set are land-enclosed bodies of water in CT. distinct(six_lakes, Name) distinct(twelve_lakes, Name)
+
+2.  How many individuals are in your study?
+
+    - There are 152 individual land-enclosed bodies of water that we will be using for this project. count(six_lakes, Name) count(twelve_lakes, Name)
+
+3.  Are there repeated measurements on individuals? (Such as measurements taken over time on the same individual?)
+
+    - Yes, there are repeated measurements on the land-enclosed bodies of water in CT between the 2006 and 2012 datasets. intersect(names(six_lakes), names(twelve_lakes)
+
+4.  How many total variables are in the data set? Which variables are of interest to you? How does each variable connect to your specific questions?
+
+The variables that are of interest to us are the aquatic life, drinking water supply, location, shape_area and shape_length. The aquatic life and drinking water supply variables are essential to the first question that asks about the correlation of the two variables during the year 2006 and 2012. We want to see if there is a correlation between the water being potable, and there being a dense aquatic life presence. We then want to deepen our initial question by seeing if the location variable has any impact on the drinking water supply and the aquatic life variables. For example, if the water is located in Bridgeport versus Ridgefield, does that impact the outcome of the first question.
+
+5\. What data tidying steps do you anticipate having to do to get a clean data set for the remaining analyses? I believe that we will have to filter some of the columns to get the data necessary. We will also have to rule out the data points that are classified as N/A, which we can do through using the the filter() function and the drop_na() function.
+
+6\. For some groups, how do you plan to combine from different data sets? We are stacking the data sets to combine them. This will make it easiest to compare the data that we are looking to evaluate \<\<
+
+## Initial Hypotheses
+
+Make them specific and connect to measures in your data set. Where appropriate, write these as formal tests of hypotheses.
+
+1.  How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+H₀: ρ=0\rho = 0ρ=0
+
+There is no association between aquatic life support and drinking water supply among Connecticut lakes.
+
+Hₐ: ρ≠0\rho \neq 0ρ=0
+
+There is an association between aquatic life support and drinking water supply among Connecticut lakes.
+
+2.  Do the regions where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+H₀: ρ=0\rho = 0ρ=0 There is no association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+
+Hₐ: ρ≠0\rho \neq 0ρ=0
+
+There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+
+3.  How have the length and area changed over time?
+
+## Exploratory Data Analysis
+
+```{r}
+options(styler.save_after_styling = TRUE)
+library(tidyverse)
+install.packages("naniar")
+library(naniar)
+
+twelve_lakes <- read_csv("2012.csv")
+six_lakes    <- read_csv("2006.csv")
+
+common_cols <- intersect(names(six_lakes), names(twelve_lakes))
+
+six_lakes_aligned   <- six_lakes |> select(all_of(common_cols))
+twelve_lakes_aligned <- twelve_lakes |> select(all_of(common_cols))
+
+total_lakes <- bind_rows(six_lakes_aligned, twelve_lakes_aligned) |> 
+  arrange(Cycle)
+total_lakes
+```
+
+## Statistical Methods, Modeling, and Results
+
+### Question 1: How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+```{r}
+table(total_lakes$`Aquatic Life`)
+```
+
+```{r}
+table(total_lakes$`Drinking Water Supply`)
+```
+
+```{r}
+lakes_mutated <- total_lakes |>
+  filter(Cycle == 2006 | Cycle == 2012) |>
+  mutate(
+    across(c(`Aquatic Life`, `Drinking Water Supply`), ~ case_when(
+      .x == "Fully Supporting" ~ 5,
+      .x == "Not Supporting" ~ 4,
+      .x == "Not Assessed" ~ 3,
+      .x == "Not Evaluated In 2006" ~ 2,
+      .x == "Water Not Classified For Drinking Supply" ~ 1
+    ))
+  )
+lakes_mutated
+
+lake_correlations <- lakes_mutated |>
+  group_by(`Cycle`) |>
+  summarize(correlation = if(sd(`Aquatic Life`, na.rm = TRUE) > 0 & sd(`Drinking Water Supply`, na.rm = TRUE) > 0) {
+    cor(`Aquatic Life`, `Drinking Water Supply`, use = "complete.obs")
+  } else {
+    NA_real_
+  }
+  )
+print(lake_correlations)
+```
+
+### Question 2: Do the towns where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+```{r}
+total_lakes_regions <- lakes_mutated |>
+  separate_wider_regex(
+    cols = Name,
+    patterns = c(name = ".*?", " \\(", place = ".*?", "\\)"),
+    too_few = "align_start"
+  )
+total_lakes_regions
+```
+
+```{r}
+water_impact <- total_lakes_regions |>
+  group_by(place) |>
+  summarise(
+    mean_aquatic = mean(`Aquatic Life`, na.rm = TRUE),
+    mean_drinking = mean(`Drinking Water Supply`, na.rm = TRUE)
+  )
+water_impact
+```
+
+### Question 3: What lake has changed the most regarding length and area in the years of 2006 to 2012?
+
+### How have the length and area changed over time?
+
+```{r}
+lakes_change <- six_lakes_aligned |>
+  left_join(
+    twelve_lakes_aligned,
+    by = "305B ID",
+    suffix = c("_2006", "_2012")
+  )
+lakes_change <- lakes_change |> 
+  select(Name_2006, Name_2012, Shape__Length_2006, Shape__Length_2012, Shape__Area_2006, Shape__Area_2012) |>
+  mutate(length_ratio = Shape__Length_2012 / Shape__Length_2006,area_ratio = Shape__Area_2012 / Shape__Area_2006)
+```
+
+## Data-driven Questions
+
+#### add here
+
+## Discussion
+
+#### add here
+
+## References
+
+Bashir, I., Lone, F. A., Bhat, R. A., Mir, S. A., Dar, Z. A., & Dar, S. A. (2020). Concerns and Threats of Contamination on Aquatic Ecosystems. Bioremediation and Biotechnology: Sustainable Approaches to Pollution Degradation, 1–26. https://doi.org/10.1007/978-3-030-35691-0_1
+
+Stephen R. Carpenter, Emily H. Stanley, M. Jake Vander Zanden. 2011. State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes. Annual Review of Environment and Resources 36:75-99. https://doi.org/10.1146/annurev-environ-021810-094524
+
+## Appendix
+
+#### maybe
