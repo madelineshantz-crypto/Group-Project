@@ -1,5 +1,5 @@
 ---
-title: "Review of Connecticut's Lake systems focusing in geography, aquatic life, and regional impact."
+title: "Review of Connecticut's Lake systems focusing in geography, aquatic life, and regional impact - Data 412."
 author: "Maddy Shantz, Abby Nolan, Sophia Gee"
 format: typst
 editor: visual
@@ -10,7 +10,6 @@ echo: false
 ```{r}
 options(styler.save_after_styling = TRUE)
 library(tidyverse)
-library(ggplot2)
 library(naniar)
 ```
 
@@ -78,6 +77,8 @@ There is an association between the regions where the lakes are located and the 
 
 Describe the features of your data using numerical and graphical summaries. Do not just include all possible plots but select important graphs and numerical summaries. Be sure to include discussion of what these plots tell you about your data and any preliminary evidence they suggest about your hypotheses.
 
+Background:
+
 ```{r}
 twelve_lakes <- read_csv("2012.csv")
 six_lakes    <- read_csv("2006.csv")
@@ -92,42 +93,15 @@ total_lakes <- bind_rows(six_lakes_aligned, twelve_lakes_aligned) |>
 total_lakes
 ```
 
-### Question 1: How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+Question 1
 
 ```{r}
-table(total_lakes$`Aquatic Life`)
+twelve_lakes <- read_csv("2012.csv")
+six_lakes <- read_csv("2006.csv")
+total_lakes <- bind_rows(six_lakes, twelve_lakes)
 ```
 
-```{r}
-table(total_lakes$`Drinking Water Supply`)
-```
-
-```{r}
-lakes_mutated <- total_lakes |>
-  filter(Cycle == 2006 | Cycle == 2012) |>
-  mutate(
-    across(c(`Aquatic Life`, `Drinking Water Supply`), ~ case_when(
-      .x == "Fully Supporting" ~ 5,
-      .x == "Not Supporting" ~ 4,
-      .x == "Not Assessed" ~ 3,
-      .x == "Not Evaluated In 2006" ~ 2,
-      .x == "Water Not Classified For Drinking Supply" ~ 1
-    ))
-  )
-lakes_mutated
-
-lake_correlations <- lakes_mutated |>
-  group_by(`Cycle`) |>
-  summarize(correlation = if(sd(`Aquatic Life`, na.rm = TRUE) > 0 & sd(`Drinking Water Supply`, na.rm = TRUE) > 0) {
-    cor(`Aquatic Life`, `Drinking Water Supply`, use = "complete.obs")
-  } else {
-    NA_real_
-  }
-  )
-print(lake_correlations)
-```
-
-### Question 2: Do the towns where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+Question 2:
 
 ```{r}
 total_lakes_regions <- lakes_mutated |>
@@ -149,7 +123,7 @@ water_impact <- total_lakes_regions |>
 water_impact
 ```
 
-### Question 3: How have the length and area changed over time?
+Question 3:
 
 ```{r}
 lakes_change <- six_lakes_aligned |>
@@ -179,8 +153,6 @@ A brief discussion of your results and how they may be placed in the context of 
 
 A list of references cited in your report. Use a standard format for references (such as APA or MLA style).
 
-[@carpenter2011] [@bashir2020a]
-
 ## Appendix:
 
-Include whatever you feel needs to be included but doesn’t fit in with the above. This could include additional R code not included in the main text. Include a detailed enough description of how you got your data set so someone else could find the same date set. Give web links and/or instructions.
+Include whatever you feel needs to be included but doesn’t fit in with the above. This could include additional R code not included in the main text.Include a detailed enough description of how you got your data set so someone else could find the same date set. Give web links and/or instructions.
