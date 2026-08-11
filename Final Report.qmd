@@ -11,7 +11,6 @@ echo: false
 options(styler.save_after_styling = TRUE)
 library(tidyverse)
 library(naniar)
-library(boot)
 ```
 
 ## Introduction
@@ -39,8 +38,6 @@ The variables that are of interest to us are the aquatic life, drinking water su
 In the "Annual Review of Environment and Resources" the section 'State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes' discusses the large-scale changes in freshwater. This includes physical, chemical and biological are associated with human factors, yet there is a lack of addressing the institutional aspects of water management. This paper aims to discuss the natural science aspects of freshwater resources while trying to emphasize the comprehensive approach that is needed to sustaining freshwater resources.
 
 ### Research Goals and Questions
-
-State the overall research goals/questions. Where did you find this data? Who originally collected this data? For what purpose?
 
 Our main research goals were to explore the correlation of aquatic life support and drinking water supply in the years 2006 and 2012, determine if there is a regional impact on the aquatic life support and drinking water supply correlation, and determine how have the length and area of the lakes changed over time.
 
@@ -101,7 +98,6 @@ table(total_lakes$`Drinking Water Supply`)
 ```{r}
 lakes_cleaned <- total_lakes |>
   filter(Cycle %in% c(2006, 2012)) |>
-  count(Cycle, `Aquatic Life`, `Drinking Water Supply`) |>
   mutate(
     aquatic_numeric = case_when(
       `Aquatic Life` == "Fully Supporting" ~ 5,
@@ -122,15 +118,44 @@ lakes_cleaned <- total_lakes |>
     ) |>
   filter(!is.na(aquatic_numeric) & !is.na(drinking_numeric))
 
-lakes_cleaned
+lakes_wide <- lakes_cleaned |>
+  pivot_wider(
+    id_cols = `305B ID`,
+    names_from = Cycle,
+    values_from = c(aquatic_numeric, drinking_numeric)
+    ) |>
+      drop_na()
 
-lake_correlations <- lakes_cleaned |>
-  group_by(Cycle) |>
-  summarize(
-    weighted_relationship = lm(scale(aquatic_numeric) ~scale(drinking_numeric), weights = n)$coefficients[2]
-    )
-print(lake_correlations)
+cor_matrix <- lakes_wide |>
+  select(
+    aquatic_numeric_2006, 
+    drinking_numeric_2006, 
+    aquatic_numeric_2012, 
+    drinking_numeric_2012
+  ) |>
+  cor(method = "spearman")
+
+n_lakes <- nrow(lakes_wide)
+
+print(paste("Number of matched lakes (n):", n_lakes))
+print(cor_matrix)
+
+lakes_cleaned |>
+  ggplot(aes(x = drinking_numeric, y = aquatic_numeric, color = as.factor(Cycle))) +
+  geom_jitter(alpha = 0.5, width = 0.18, height = 0.18) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, linewidth = 1.2) +
+  scale_color_manual(values = c("2006" = "#56B4E9", "2012" = "#E69F00")) +
+  labs(
+    title = "Comparison of Trends: 2006 vs 2012",
+    x = "Drinking Water Supply Score",
+    y = "Aquatic Life Support Score",
+    color = "Evaluation Year"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
+
+We fail to reject the null hypothesis claiming there is a correlation between aquatic life and drinking water supply. There is no statistical significant change in the correlation between lake aquatic life support and drinking water supply during the years 2006 and 2012 in Connecticut lakes as the p-value is greater than 0.05.
 
 ### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
@@ -205,6 +230,12 @@ cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color
 cong_dist_plot1
 ```
 
+In Congressional Districts 1, 3, and 5, the steepness of the lines suggests a song and positive relationship, as being almost identical in 2006 and 2012. District 4 has a lower baseline for aquatic life support, but it's slope is similar to Districts 1, 3 and 5.
+
+The major visual difference is in District 2, where in 2006 the line is much steeper, yet gets cut off short. This is likely due to there being no lakes that scored above around a 2.5 in the district on the Drinking Water Supply axis. In 2012, the line flattens out, appearing much less steep than the other districts within 2012.
+
+This graph visually suggests that the region does not heavily impact the correlation, except for the small restriction of range in District 2. The positive relationship between Aquatic Life and Drinking Water Supply behaves the same way regardless of which congressional district the lake is.
+
 ### Question 3: How have the length and area changed over time?
 
 ```{r}
@@ -217,7 +248,6 @@ lakes_change <- six_lakes_aligned |>
 lakes_change <- lakes_change |> 
 select(Name_2006, Name_2012, Shape__Length_2006, Shape__Length_2012, Shape__Area_2006, Shape__Area_2012) |>
 mutate(length_ratio = Shape__Length_2012 / Shape__Length_2006,area_ratio = Shape__Area_2012 / Shape__Area_2006)
-lakes_change
 ```
 
 ## Statistical Methods, Modeling, and Results:
