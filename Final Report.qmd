@@ -261,6 +261,43 @@ select(Name_2006, Name_2012, Shape__Length_2006, Shape__Length_2012, Shape__Area
 mutate(length_ratio = Shape__Length_2012 / Shape__Length_2006,area_ratio = Shape__Area_2012 / Shape__Area_2006)
 ```
 
+```{r}
+lakes_change <- lakes_change |>
+  mutate( length_percent_change = (length_ratio - 1) * 100, area_percent_change = (area_ratio - 1) * 100)
+```
+
+```{r}
+ggplot(lakes_change, aes(x = length_percent_change)) +
+  geom_histogram(bins = 30, fill = "steelblue") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs (x = "Percent change in length", y = "Number of lakes", title = "Distribution of Changes in Lake Length from 2006 to 2012") +
+  theme_minimal()
+```
+
+```{r}
+ggplot(lakes_change, aes(x = area_percent_change)) +
+  geom_histogram(bins = 30, fill = "steelblue") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs( x = "Percent change in area", y = "Number of lakes", title = "Distribution of Changes in Lake Area from 2006 to 2012") +
+  theme_minimal()
+```
+
+```{r}
+t.test(
+  lakes_change$Shape__Length_2012,
+  lakes_change$Shape__Length_2006,
+  paired = TRUE)
+```
+
+```{r}
+t.test(
+  lakes_change$Shape__Area_2012,
+  lakes_change$Shape__Area_2006,
+  paired = TRUE)
+```
+
+We fail to reject the null hypothesis that there is no change in the length and area of the lakes between 2006 and 2012. There is a significant amount of change in lake length between 2006 and 2012. However, the change in area is not statistically significant. 
+
 ## Statistical Methods, Modeling, and Results:
 
 Include your formal statistical analyses such as a formal hypothesis test and modeling. Include your assessment of the assumptions of your methods, with necessary adjustments.
