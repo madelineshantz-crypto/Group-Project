@@ -122,7 +122,7 @@ lake_correlations <- lakes_mutated |>
 print(lake_correlations)
 ```
 
-### Question 2: Do the towns where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
 ```{r}
 total_lakes_regions <- lakes_mutated |>
@@ -136,7 +136,7 @@ total_lakes_regions
 
 ```{r}
 water_impact <- total_lakes_regions |>
-  group_by(place) |>
+  group_by(place, Cycle) |>
   summarise(
     mean_aquatic = mean(`Aquatic Life`, na.rm = TRUE),
     mean_drinking = mean(`Drinking Water Supply`, na.rm = TRUE)
@@ -147,44 +147,62 @@ water_impact
 ```{r}
 district_1 <- water_impact |> 
   filter(place %in% c(
-    "Barkhamsted", "Berlin", "Bloomfield", "Bristol", "Colebrook", 
-    "Cromwell", "East Granby", "East Windsor", "Glastonbury (partial)", 
-    "Granby", "Hartford", "Hartland", "Manchester", "Middletown (partial)", 
-    "New Hartford", "Newington", "Portland", "Rocky Hill", "South Windsor", 
-    "Southington", "West Hartford", "Wethersfield", "Winchester", 
-    "Windsor", "Windsor Locks"
-  )) |> 
-  group_by(place)
-district_1
-```
+    "Bristol", "Colebrook", "Hartland", "Manchester", "Newington", "Portland", "Winchester"),
+  Cycle %in% c(2006, 2012))
 
-```{r}
 district_2 <- water_impact |> 
-  filter(place %in% c("Andover", "Ashford", "Bolton", "Bozrah", "Brooklyn", "Canterbury", "Chaplin", "Chester", "Clinton", "Colchester", "Columbia", "Coventry", "Deep River", "Durham", "Eastford", "East Haddam", "East Hampton", "East Lyme", "Ellington", "Enfield", "Essex", "Franklin", "Griswold", "Groton", "Haddam", "Hampton", "Hebron", "Killingly", "Lebanon", "Ledyard", "Lisbon", "Madison", "Mansfield", "Marlborough", "Montville", "New London", "North Stonington", "Norwich", "Old Lyme", "Old Saybrook", "Plainfield", "Pomfret", "Preston", "Putnam", "Salem", "Scotland", "Somers", "Sprague", "Stafford", "Sterling", "Stonington", "Suffield", "Thompson", "Tolland", "Union", "Vernon", "Voluntown", "Waterford", "Westbrook", "Willington", "Windham", "Woodstock"
-  )) |> 
-  group_by(place)
-district_2
-```
+  filter(place %in% c("Ashford", "Bozrah", "Brooklyn", "Chester", "Colchester", "Columbia", "Coventry", "Durham", "East Haddam", "East Hampton", "East Lyme", "Griswold", "Haddam", "Hebron", "Killingly", "Lebanon", "Ledyard", "Mansfield", "Marlborough", "North Stonington", "Norwich", "Plainfield", "Preston", "Somers", "Sprague", "Sterling", "Thompson", "Tolland", "Union", "Vernon", "Voluntown", "Woodstock"
+  ),
+  Cycle %in% c(2006, 2012))
 
-```{r}
 district_3 <- water_impact |>
-  filter(place %in% c("Ansonia", "Beacon Falls", "Bethany", "Branford", "Cheshire", "Derby", "East Haven", "Guilford", "Hamden", "Middlebury", "Middletown (partial)", "Milford", "Naugatuck", "New Haven", "North Branford", "North Haven", "Orange", "Prospect", "Seymour", "Stratford", "Wallingford", "Waterbury (partial)", "West Haven", "Woodbridge")) |>
-  group_by(place)
-district_3
-```
+  filter(place %in% c("Branford", "Derby", "Guilford", "Hamden", "New Haven", "North Branford", "Seymour", "Stratford", "Wallingford"),
+  Cycle %in% c(2006, 2012)
+  )
 
-```{r}
 district_4 <- water_impact |>
-  filter(place %in% c("Bridgeport", "Darien", "Easton", "Fairfield", "Greenwich", "Monroe", "New Canaan", "Norwalk", "Oxford", "Redding", "Ridgefield", "Shelton", "Sherman", "Stamford", "Trumbull", "Weston", "Westport", "Wilton")) |>
-  group_by(place)
-district_4
-```
+  filter(place %in% c("Bridgeport", "Fairfield", "Greenwich", "Ridgefield", "Wilton"),
+  Cycle %in% c(2006, 2012))
 
-```{r}
 district_5 <- water_impact |>
-  filter(place %in% c("Avon", "Bethel", "Bethlehem", "Bridgewater", "Brookfield", "Burlington", "Canaan", "Canton", "Cheshire", "Cornwall", "Danbury", "Farmington", "Goshen", "Harwinton", "Kent", "Litchfield", "Meriden", "Middlebury", "Morris", "New Britain", "New Fairfield", "New Milford", "Newtown", "Norfolk", "North Canaan", "Plainville", "Plymouth", "Roxbury", "Salisbury", "Sharon", "Sherman", "Simsbury", "Southbury", "Thomaston", "Torrington", "Warren", "Washington", "Waterbury", "Watertown", "Wolcott", "Woodbury")) |>
-  group_by(place)
-district_5
+  filter(place %in% c("Canaan", "Cheshire", "Cornwall", "Danbury", "Goshen", "Kent", "Meriden", "New Fairfield", "Newtown", "Norfolk", "Plymouth", "Salisbury", "Sharon", "Simsbury", "Torrington", "Watertown", "Wolcott", "Woodbury"),
+  Cycle %in% c(2006, 2012))
+
+cong_dist_master <- bind_rows(
+  "district_1" = district_1,
+  "district_2" = district_2,
+  "district_3" = district_3,
+  "district_4" = district_4,
+  "district_5" = district_5,
+  .id = "group"
+)
+cong_dist_master
+
+c_d_plot <- cong_dist_master |>
+  group_by(group, Cycle, place) |> 
+  summarise(
+    avg_aquatic = mean(mean_aquatic, na.rm = TRUE),
+    avg_drinking = mean(mean_drinking, na.rm = TRUE), .groups = "drop")
+
+c_d_plot
+
+cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color = group)) +
+  geom_point(size = 3, alpha = 0.7, na.rm = TRUE) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.2, na.rm = TRUE) +
+  facet_wrap(~ Cycle) +
+  labs(
+    title = "Aquatic Life vs. Drinking Water Correlation by District",
+    subtitle = "Varying line slopes indicate districts impact the correlation differently",
+    x = "Mean Drinking Water Supply Score",
+    y = "Mean Aquatic Life Support Score",
+    color = "Congressional District"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"), # Enhances panel titles (2006 vs 2012)
+    legend.position = "bottom"
+  )
+cong_dist_plot1
 ```
 
 ### Question 3: How have the length and area changed over time?
