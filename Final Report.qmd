@@ -63,6 +63,8 @@ Provide a list of detailed hypotheses. For example, you might believe that a cer
 - There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
 
 3.  How have the length and area changed over time?
+- H₀: There is no change in Lake size and length between 2006 and 2012.
+- Hₐ: There is a significant difference in Lake size and length between 2006 and 2012.
 
 ## Exploratory Data Analysis:
 
