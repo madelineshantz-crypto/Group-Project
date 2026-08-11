@@ -49,27 +49,24 @@ Provide a list of detailed hypotheses. For example, you might believe that a cer
 
 1.  How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
 
-H₀: ρ=0\rho = 0ρ=0
-
-There is no association between aquatic life support and drinking water supply among Connecticut lakes.
-
-Hₐ: ρ≠0\rho \neq 0ρ=0
-
-There is an association between aquatic life support and drinking water supply among Connecticut lakes.
+- H₀: ρ=0\rho = 0ρ=0
+- There is no association between aquatic life support and drinking water supply among Connecticut lakes.
+- Hₐ: ρ≠0\rho \neq 0ρ=0
+- There is an association between aquatic life support and drinking water supply among Connecticut lakes.
 
 2.  Do the regions where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
-H₀: ρ=0\rho = 0ρ=0 There is no association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+- H₀: ρ=0\rho = 0ρ=0 There is no association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
 
-Hₐ: ρ≠0\rho \neq 0ρ=0
+- Hₐ: ρ≠0\rho \neq 0ρ=0
 
-There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+- There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
 
 3.  How have the length and area changed over time?
 
 ## Exploratory Data Analysis:
 
-Describe the features of your data using numerical and graphical summaries. Do not just include all possible plots but select important graphs and numerical summaries. Be sure to include discussion of what these plots tell you about your data and any preliminary evidence they suggest about your hypotheses.
+The data needed to be tidied and clean as we chose a 'messy' data set.
 
 ```{r}
 twelve_lakes <- read_csv("2012.csv")
@@ -160,11 +157,20 @@ We fail to reject the null hypothesis claiming there is a correlation between aq
 ### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
 ```{r}
+total_lakes_regions <- lakes_cleaned |>
+  separate_wider_regex(
+    cols = Name,
+    patterns = c(name = ".*?", " \\(", place = ".*?", "\\)"),
+    too_few = "align_start"
+  )
+total_lakes_regions
+
 water_impact <- total_lakes_regions |>
   group_by(place, Cycle) |>
   summarise(
-    mean_aquatic = mean(`Aquatic Life`, na.rm = TRUE),
-    mean_drinking = mean(`Drinking Water Supply`, na.rm = TRUE)
+    mean_aquatic = mean(aquatic_numeric, na.rm = TRUE),
+    mean_drinking = mean(drinking_numeric, na.rm = TRUE),
+    .groups = "drop"
   )
 water_impact
 ```
@@ -209,12 +215,17 @@ c_d_plot <- cong_dist_master |>
     avg_aquatic = mean(mean_aquatic, na.rm = TRUE),
     avg_drinking = mean(mean_drinking, na.rm = TRUE), .groups = "drop")
 
-c_d_plot
-
 cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color = group)) +
   geom_point(size = 3, alpha = 0.7, na.rm = TRUE) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1.2, na.rm = TRUE) +
   facet_wrap(~ Cycle) +
+  scale_color_discrete(
+    labels = c(  "district_1" = "District 1",
+                 "district_2" = "District 2",
+                 "district_3" = "District 3",
+                 "district_4" = "District 4",
+                 "district_5" = "District 5")
+  ) +
   labs(
     title = "Aquatic Life vs. Drinking Water Correlation by District",
     subtitle = "Varying line slopes indicate districts impact the correlation differently",
@@ -224,7 +235,7 @@ cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color
   ) +
   theme_minimal() +
   theme(
-    strip.text = element_text(size = 12, face = "bold"), # Enhances panel titles (2006 vs 2012)
+    strip.text = element_text(size = 12, face = "bold"), 
     legend.position = "bottom"
   )
 cong_dist_plot1
