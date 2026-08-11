@@ -64,8 +64,6 @@ intersect(names(six_lakes_aligned), names(twelve_lakes_aligned))
 
 - This paper aims to discuss the natural science aspects of freshwater resources while trying to emphasize the comprehensive approach that is needed to sustaining freshwater resources.
 
-### add this stuff into the intro \>\> \### Data 2 (1-3 Sofia, 4-6 Maddy) Provide code for and address the following items as you get to know your data. Use the original data set(s) you downloaded to answer these questions:
-
 ## Initial Hypotheses
 
 Make them specific and connect to measures in your data set. Where appropriate, write these as formal tests of hypotheses.
@@ -168,6 +166,67 @@ water_impact <- total_lakes_regions |>
     mean_drinking = mean(`Drinking Water Supply`, na.rm = TRUE)
   )
 water_impact
+```
+
+```{r}
+district_1 <- water_impact |> 
+  filter(place %in% c(
+    "Bristol", "Colebrook", "Hartland", "Manchester", "Newington", "Portland", "Winchester"),
+    Cycle %in% c(2006, 2012))
+
+district_2 <- water_impact |> 
+  filter(place %in% c("Ashford", "Bozrah", "Brooklyn", "Chester", "Colchester", "Columbia", "Coventry", "Durham", "East Haddam", "East Hampton", "East Lyme", "Griswold", "Haddam", "Hebron", "Killingly", "Lebanon", "Ledyard", "Mansfield", "Marlborough", "North Stonington", "Norwich", "Plainfield", "Preston", "Somers", "Sprague", "Sterling", "Thompson", "Tolland", "Union", "Vernon", "Voluntown", "Woodstock"
+  ),
+  Cycle %in% c(2006, 2012))
+
+district_3 <- water_impact |>
+  filter(place %in% c("Branford", "Derby", "Guilford", "Hamden", "New Haven", "North Branford", "Seymour", "Stratford", "Wallingford"),
+         Cycle %in% c(2006, 2012)
+  )
+
+district_4 <- water_impact |>
+  filter(place %in% c("Bridgeport", "Fairfield", "Greenwich", "Ridgefield", "Wilton"),
+         Cycle %in% c(2006, 2012))
+
+district_5 <- water_impact |>
+  filter(place %in% c("Canaan", "Cheshire", "Cornwall", "Danbury", "Goshen", "Kent", "Meriden", "New Fairfield", "Newtown", "Norfolk", "Plymouth", "Salisbury", "Sharon", "Simsbury", "Torrington", "Watertown", "Wolcott", "Woodbury"),
+         Cycle %in% c(2006, 2012))
+
+cong_dist_master <- bind_rows(
+  "district_1" = district_1,
+  "district_2" = district_2,
+  "district_3" = district_3,
+  "district_4" = district_4,
+  "district_5" = district_5,
+  .id = "group"
+)
+cong_dist_master
+
+c_d_plot <- cong_dist_master |>
+  group_by(group, Cycle, place) |> 
+  summarise(
+    avg_aquatic = mean(mean_aquatic, na.rm = TRUE),
+    avg_drinking = mean(mean_drinking, na.rm = TRUE), .groups = "drop")
+
+c_d_plot
+
+cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color = group)) +
+  geom_point(size = 3, alpha = 0.7, na.rm = TRUE) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.2, na.rm = TRUE) +
+  facet_wrap(~ Cycle) +
+  labs(
+    title = "Aquatic Life vs. Drinking Water Correlation by District",
+    subtitle = "Varying line slopes indicate districts impact the correlation differently",
+    x = "Mean Drinking Water Supply Score",
+    y = "Mean Aquatic Life Support Score",
+    color = "Congressional District"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"), # Enhances panel titles (2006 vs 2012)
+    legend.position = "bottom"
+  )
+cong_dist_plot1
 ```
 
 ### Question 3: What lake has changed the most regarding length and area in the years of 2006 to 2012?
