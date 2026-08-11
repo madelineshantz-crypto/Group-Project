@@ -11,6 +11,7 @@ echo: false
 options(styler.save_after_styling = TRUE)
 library(tidyverse)
 library(naniar)
+library(boot)
 ```
 
 ## Introduction
@@ -98,41 +99,40 @@ table(total_lakes$`Drinking Water Supply`)
 ```
 
 ```{r}
-lakes_mutated <- total_lakes |>
-  filter(Cycle == 2006 | Cycle == 2012) |>
+lakes_cleaned <- total_lakes |>
+  filter(Cycle %in% c(2006, 2012)) |>
+  count(Cycle, `Aquatic Life`, `Drinking Water Supply`) |>
   mutate(
-    across(c(`Aquatic Life`, `Drinking Water Supply`), ~ case_when(
-      .x == "Fully Supporting" ~ 5,
-      .x == "Not Supporting" ~ 4,
-      .x == "Not Assessed" ~ 3,
-      .x == "Not Evaluated In 2006" ~ 2,
-      .x == "Water Not Classified For Drinking Supply" ~ 1
-    ))
-  )
-lakes_mutated
+    aquatic_numeric = case_when(
+      `Aquatic Life` == "Fully Supporting" ~ 5,
+      `Aquatic Life` == "Not Supporting" ~ 4,
+      `Aquatic Life` == "Not Assessed" ~ 3,
+      `Aquatic Life` == "Not Evaluated In 2006" ~ 2,
+      `Aquatic Life` == "Water Not Classified For Drinking Supply" ~ 1,
+      TRUE ~ NA_real_
+    ),
+    drinking_numeric = case_when(
+      `Drinking Water Supply` == "Fully Supporting" ~ 5,
+      `Drinking Water Supply` == "Not Supporting" ~ 4,
+      `Drinking Water Supply` == "Not Assessed" ~ 3,
+      `Drinking Water Supply` == "Not Evaluated In 2006" ~ 2,
+      `Drinking Water Supply` == "Water Not Classified For Drinking Supply" ~ 1,
+      TRUE ~ NA_real_
+    )
+    ) |>
+  filter(!is.na(aquatic_numeric) & !is.na(drinking_numeric))
 
-lake_correlations <- lakes_mutated |>
-  group_by(`Cycle`) |>
-  summarize(correlation = if(sd(`Aquatic Life`, na.rm = TRUE) > 0 & sd(`Drinking Water Supply`, na.rm = TRUE) > 0) {
-    cor(`Aquatic Life`, `Drinking Water Supply`, use = "complete.obs")
-  } else {
-    NA_real_
-  }
-  )
+lakes_cleaned
+
+lake_correlations <- lakes_cleaned |>
+  group_by(Cycle) |>
+  summarize(
+    weighted_relationship = lm(scale(aquatic_numeric) ~scale(drinking_numeric), weights = n)$coefficients[2]
+    )
 print(lake_correlations)
 ```
 
 ### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
-
-```{r}
-total_lakes_regions <- lakes_mutated |>
-  separate_wider_regex(
-    cols = Name,
-    patterns = c(name = ".*?", " \\(", place = ".*?", "\\)"),
-    too_few = "align_start"
-  )
-total_lakes_regions
-```
 
 ```{r}
 water_impact <- total_lakes_regions |>
@@ -217,6 +217,7 @@ lakes_change <- six_lakes_aligned |>
 lakes_change <- lakes_change |> 
 select(Name_2006, Name_2012, Shape__Length_2006, Shape__Length_2012, Shape__Area_2006, Shape__Area_2012) |>
 mutate(length_ratio = Shape__Length_2012 / Shape__Length_2006,area_ratio = Shape__Area_2012 / Shape__Area_2006)
+lakes_change
 ```
 
 ## Statistical Methods, Modeling, and Results:
