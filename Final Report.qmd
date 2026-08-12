@@ -74,7 +74,7 @@ Provide a list of detailed hypotheses. For example, you might believe that a cer
 
 - Hₐ: There was change in lake length and area between 2006 and 2012.
 
-<!-- Maddy did the introduction, literature review, and initial hypotheses parts, using the feedback from Professor Marge -->
+<!-- Maddy did the introduction, literature review, and initial hypotheses parts, using the feedback from Professor Marge, Abby and Maddy co-created the questions/hypotheses -->
 
 ## Exploratory Data Analysis:
 
