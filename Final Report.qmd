@@ -5,9 +5,11 @@ format: typst
 editor: visual
 bibliography: references.bib
 echo: false
-warning = FALSE
-message = FALSE
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
 
 ```{r}
 options(styler.save_after_styling = TRUE)
