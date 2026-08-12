@@ -5,13 +5,13 @@ format:
   revealjs:
     theme: moon
 editor: visual
-echo: false
 ---
 
 ```{r}
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
+library(gt)
 ```
 
 ## Introduction to the data
@@ -73,14 +73,17 @@ library(ggthemes)
 ## Q1: Exploratory Data Analysis
 
 ```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(gt)
+
 twelve_lakes <- read_csv("2012.csv")
 six_lakes <- read_csv("2006.csv")
-
 common_cols <- intersect(names(six_lakes), names(twelve_lakes))
-
 six_lakes_aligned <- six_lakes |> select(all_of(common_cols))
 twelve_lakes_aligned <- twelve_lakes |> select(all_of(common_cols))
-
 total_lakes <- bind_rows(six_lakes_aligned, twelve_lakes_aligned) |>
   arrange(Cycle)
 
@@ -125,9 +128,59 @@ cor_matrix <- lakes_wide |>
 
 n_lakes <- nrow(lakes_wide)
 
-print("Spearman Correlations for aquatic life support and drinking water supply")
-print(paste("Number of matched lakes (n):", n_lakes))
-print(cor_matrix)
+cor_df <- as_tibble(cor_matrix, rownames = "Variable") |>
+  rename(
+    "Aquatic '06" = aquatic_numeric_2006,
+    "Drinking '06" = drinking_numeric_2006,
+    "Aquatic '12" = aquatic_numeric_2012,
+    "Drinking '12" = drinking_numeric_2012
+  )
+
+cor_df |>
+  gt() |>
+  fmt_number(columns = -Variable, decimals = 2) |>
+  tab_header(
+    title = "Spearman Correlations: Aquatic Life & Drinking Water Support",
+    subtitle = paste("Number of matched lakes (n):", n_lakes)
+  ) |>
+  tab_options(
+    table.font.size = px(24),
+    table.background.color = "transparent",
+    heading.background.color = "transparent",
+    table.font.color = "white"
+  )
+
+test_2006 <- cor.test(
+  lakes_wide$aquatic_numeric_2006,
+  lakes_wide$drinking_numeric_2006,
+  method = "spearman"
+)
+
+test_2012 <- cor.test(
+  lakes_wide$aquatic_numeric_2012,
+  lakes_wide$drinking_numeric_2012,
+  method = "spearman"
+)
+
+spearman_results <- tibble(
+  Cycle = c("2006", "2012"),
+  rho = c(test_2006$estimate, test_2012$estimate),
+  S = c(test_2006$statistic, test_2012$statistic),
+  p.value = c(test_2006$p.value, test_2012$p.value)
+)
+
+spearman_results |>
+  gt() |>
+  fmt_number(columns = c(rho, S), decimals = 3) |>
+  fmt_number(columns = p.value, decimals = 4) |>
+  tab_header(
+    title = "Spearman Correlation Tests: Aquatic Life vs. Drinking Water"
+  ) |>
+  tab_options(
+    table.background.color = "transparent",
+    heading.background.color = "transparent",
+    table.font.color = "white"
+  )
 ```
 
 ## Q1: Exploratory Data Analysis
@@ -243,6 +296,10 @@ cong_dist_plot1
 ## Q2: Exploratory Data Analysis
 
 ```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
 district_correlations <- c_d_plot |>
   group_by(group, Cycle) |>
   summarise(
@@ -256,7 +313,36 @@ district_correlations <- c_d_plot |>
     .groups = "drop"
   )
 
-district_correlations
+district_correlations |>
+  mutate(
+    group = case_when(
+      group == "district_1" ~ "District 1",
+      group == "district_2" ~ "District 2",
+      group == "district_3" ~ "District 3",
+      group == "district_4" ~ "District 4",
+      group == "district_5" ~ "District 5"
+    )
+  ) |>
+  gt() |>
+  cols_label(
+    group = "District",
+    Cycle = "Cycle",
+    correlation = "Correlation",
+    n = "N"
+  ) |>
+  fmt_number(columns = correlation, decimals = 3) |>
+  sub_missing(columns = correlation, missing_text = "—") |>
+  tab_header(
+    title = "District-Level Spearman Correlations",
+    subtitle = "Aquatic Life vs. Drinking Water Support, by Congressional District"
+  ) |>
+  tab_options(
+    table.font.size = px(24),
+    table.background.color = "transparent",
+    heading.background.color = "transparent",
+    table.font.color = "white",
+    column_labels.font.weight = "bold"
+  )
 ```
 
 ## Q3: Exploratory Data Analysis
@@ -295,17 +381,33 @@ ggplot(lakes_change, aes(x = area_percent_change)) +
 ## Q3: Exploratory Data Analysis
 
 ```{r}
-t.test(
-  lakes_change$Shape__Length_2012,
-  lakes_change$Shape__Length_2006,
-  paired = TRUE
+#| echo: false
+#| message: false
+#| warning: false
+
+length_test <- t.test(lakes_change$Shape__Length_2012, lakes_change$Shape__Length_2006, paired = TRUE)
+area_test <- t.test(lakes_change$Shape__Area_2012, lakes_change$Shape__Area_2006, paired = TRUE)
+
+t_test_results <- tibble(
+  measure = c("Shape Length", "Shape Area"),
+  estimate = c(length_test$estimate, area_test$estimate),
+  statistic = c(length_test$statistic, area_test$statistic),
+  p.value = c(length_test$p.value, area_test$p.value),
+  conf.low = c(length_test$conf.int[1], area_test$conf.int[1]),
+  conf.high = c(length_test$conf.int[2], area_test$conf.int[2])
 )
 
-t.test(
-  lakes_change$Shape__Area_2012,
-  lakes_change$Shape__Area_2006,
-  paired = TRUE
-)
+t_test_results |>
+  gt() |>
+  fmt_number(columns = -measure, decimals = 3) |>
+  tab_header(
+    title = "Paired t-tests: 2006 vs. 2012"
+  ) |>
+  tab_options(
+    table.background.color = "transparent",
+    heading.background.color = "transparent",
+    table.font.color = "white"
+  )
 ```
 
 ## Methods, Modeling, Results
