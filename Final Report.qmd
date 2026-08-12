@@ -17,6 +17,8 @@ library(tidyverse)
 library(naniar)
 ```
 
+<!-- Maddy set up the document and included the lines of code above--->
+
 ## Introduction
 
 ### Background and Data Origin
@@ -72,9 +74,11 @@ Provide a list of detailed hypotheses. For example, you might believe that a cer
 
 - Hₐ: There was change in lake length and area between 2006 and 2012.
 
+<!-- Maddy did the introduction, literature review, and initial hypotheses parts, using the feedback from Professor Marge -->
+
 ## Exploratory Data Analysis:
 
-The data needed to be tidied and clean as we chose a 'messy' data set.
+The data needed to be tidied and clean as we chose a 'messy' data set. <!-- Abby did the twelve_lakes and six_lakes data set uploads and began to bind the data. Maddy added the common_cols part, aligned the lake datasets, corrected the binding, and arranged via Cycle-->
 
 ```{r}
 twelve_lakes <- read_csv("2012.csv")
@@ -91,6 +95,8 @@ total_lakes
 ```
 
 ### Question 1: How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+<!-- Maddy did all of question 1-->
 
 ```{r}
 table(total_lakes$`Aquatic Life`)
@@ -161,6 +167,8 @@ lakes_cleaned |>
 ```
 
 ### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+<!-- Maddy did the majority of the coding for question 2, and Sofia added the district_correlations to add the spearman correlation-->
 
 ```{r}
 total_lakes_regions <- lakes_cleaned |>
@@ -266,6 +274,8 @@ district_correlations
 
 ### Question 3: How have the length and area changed over time?
 
+<!-- Sofia did the entirety of question 3-->
+
 ```{r}
 lakes_change <- six_lakes_aligned |>
    left_join(
@@ -315,6 +325,8 @@ t.test(
 
 ## Statistical Methods, Modeling, and Results:
 
+<!-- Sofia completed this section, Maddy had a few notes/paragraphs for question 1-->
+
 The first question investigated was how aquatic life support and drinking water supply were correlated in the years 2006 and 2012. The data was explored to find the rating systems for aquatic life support and drinking water supply. The categorical values ranging from fully supporting to not classified were then converted into numerical values 1-5. A scatterplot was used to visualize the relationships between aquatic life support and drinking water supply for 2006 and 2012. The scatterplot showed weak positive relationships for both years. Since the values were ordered variables, spearman rank correlations were calculated for 2006 and 2012. Spearman Correlations confirmed a weak positive relationship between aquatic life support and drinking water supply for 2006 (ρ = 0.111), as well as for 2012 (ρ = 0.116). The null hypothesis stating there is no association between aquatic life support and drinking water supply was rejected. 
 
 The second question asked if the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation. The towns for each lake were extracted from Name. Then, the aquatic life support and drinking water supply scores were averaged for each place and year. Each town was assigned to a congressional district, and scatterplots were created to show the relationship between aquatic life support and drinking water supply for each district in 2006 and 2012. The scatterplots included regression lines for each district. Spearman correlations were calculated for each district to determine the correlation between aquatic life support and drinking water supply. Districts 2-5 all had weak positive relationships between aquatic life support and water supply. However, correlations could not be calculated for District 1 because one of the variables had no variation. The descriptive evidence suggests that the null hypothesis should not be rejected. The congressional district has no effect on aquatic life support and drinking water supply correlation. 
@@ -322,6 +334,8 @@ The second question asked if the congressional districts where the lakes are loc
 The third question was whether the length and area of the lakes changed over time. To answer this question, histograms of percent change for length and area of all relevant lakes between 2006 and 2012 were created. These plots were used to visualize the distribution of length and area change. Since the same lakes were measured, a paired T–test was used to compare lake sizes from 2006 and 2012. There was no significant difference (t = 0.134, p-value = 0.893) in the lake area between 2006 and 2012. However, there was a significant difference (t = -2.085, p-value = 0.039) in lake length between 2006 and 2012. The mean length change for all lakes was determined to be -0.03, meaning the lakes decreased in length. Therefore, the null hypothesis that there was no change in the length of the lakes between 2006 and 2012 was rejected while the null hypothesis that there was no change in the area of the lakes between 2006 and 2012 not rejected.
 
 ## Data-driven Questions:
+
+<!-- Sofia completed this section-->
 
 A significant decrease in lake length was observed from 2006 to 2012. This raised questions about what factors contributed to the decrease in lake length, as well as what factors were affected by the decrease in lake length. Therefore, further investigation should consider how drinking water supply affects lake length from 2006 to 2012. It is hypothesized that there will be no effect of drinking water supply on lake length. Another question to be asked is if the reduction in lake length from 2006 to 2012 affects aquatic life support. 
 
@@ -334,6 +348,8 @@ Lastly, it was found that aquatic life support and drinking water supply had a v
 A brief discussion of your results and how they may be placed in the context of the literature.
 
 ## References:
+
+<!-- The sources Maddy used for the literature review-->
 
 Bashir, I., Lone, F. A., Bhat, R. A., Mir, S. A., Dar, Z. A., & Dar, S. A. (2020). Concerns and Threats of Contamination on Aquatic Ecosystems. Bioremediation and Biotechnology: Sustainable Approaches to Pollution Degradation, 1–26. https://doi.org/10.1007/978-3-030-35691-0_1
 
