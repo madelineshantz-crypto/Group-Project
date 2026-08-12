@@ -371,6 +371,10 @@ t.test(
 
 ## References
 
+- Bashir, I., Lone, F. A., Bhat, R. A., Mir, S. A., Dar, Z. A., & Dar, S. A. (2020). Concerns and Threats of Contamination on Aquatic Ecosystems. Bioremediation and Biotechnology: Sustainable Approaches to Pollution Degradation, 1–26. <https://doi.org/10.1007/978-3-030-35691-0_1>
+
+- Stephen R. Carpenter, Emily H. Stanley, M. Jake Vander Zanden. 2011. State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes. Annual Review of Environment and Resources 36:75-99. <https://doi.org/10.1146/annurev-environ-021810-094524>
+
 ##  {.center}
 
 ::: r-fit-text
