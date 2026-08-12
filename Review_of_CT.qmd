@@ -1,0 +1,378 @@
+---
+title: "Review of Connecticut's Lake systems focusing on geography, aquatic life, and regional impact"
+author: Madeline Shantz, Abigail Nolan, Sofia Gee
+format: 
+  revealjs:
+    theme: moon
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+```
+
+## Introduction to the data
+
+- This data is from the Connecticut Open Data website
+
+- Individuals under study are land-enclosed bodies of water in CT
+
+- Repeated measurements on 152 land-enclosed bodies of water between the 2006 and 2012 data sets
+
+- The dataset contains both quantitative and categorical measures
+
+- The variables of interest are the aquatic life support, drinking water supply, location, shape_area and shape_length
+
+## Literature Review
+
+- 'Concerns and Threats of Contamination on Aquatic Ecosystems' from "Bio-remediation and Biotechnology: Sustainable Approaches to Pollution Degradation"
+
+  - Water contamination associated with human activities like urbanization, industrialization, and agricultural activities
+
+- The "Annual Review of Environment and Resources", section 'State of the World's Freshwater Ecosystems: Physical, Chemical, and Biological Changes'
+
+  - The physical, chemical and biological changes in freshwater are associated with human factors
+
+  - There is a lack of addressing the institutional aspects of water management.
+
+## Research Goals
+
+- Explore the correlation of aquatic life support and drinking water supply in the years 2006 and 2012
+
+- Determine if there is a regional impact on the aquatic life support and drinking water supply correlation
+
+- Determine how the length and area of the lakes changed over time
+
+## Research Questions & Initial Hypotheses
+
+- How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+  - H₀: There is no association between aquatic life support and drinking water supply among Connecticut lakes
+
+  - Hₐ: There is an association between aquatic life support and drinking water supply among Connecticut lakes.
+
+## Research Questions & Initial Hypotheses
+
+- Do the regions where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+  - H₀: There is no association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation
+
+  - \- Hₐ: There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
+
+## Research Questions & Initial Hypotheses
+
+- How have the length and area changed over time?
+
+  - H₀: There is no change in Lake size and length between 2006 and 2012
+
+  - Hₐ: There is a significant difference in Lake size and length between 2006 and 2012
+
+## Q1: Exploratory Data Analysis
+
+```{r}
+twelve_lakes <- read_csv("2012.csv")
+six_lakes <- read_csv("2006.csv")
+
+common_cols <- intersect(names(six_lakes), names(twelve_lakes))
+
+six_lakes_aligned <- six_lakes |> select(all_of(common_cols))
+twelve_lakes_aligned <- twelve_lakes |> select(all_of(common_cols))
+
+total_lakes <- bind_rows(six_lakes_aligned, twelve_lakes_aligned) |>
+  arrange(Cycle)
+
+lakes_cleaned <- total_lakes |>
+  filter(Cycle %in% c(2006, 2012)) |>
+  mutate(
+    aquatic_numeric = case_when(
+      `Aquatic Life` == "Fully Supporting" ~ 5,
+      `Aquatic Life` == "Not Supporting" ~ 4,
+      `Aquatic Life` == "Not Assessed" ~ 3,
+      `Aquatic Life` == "Not Evaluated In 2006" ~ 2,
+      `Aquatic Life` == "Water Not Classified For Drinking Supply" ~ 1,
+      TRUE ~ NA_real_
+    ),
+    drinking_numeric = case_when(
+      `Drinking Water Supply` == "Fully Supporting" ~ 5,
+      `Drinking Water Supply` == "Not Supporting" ~ 4,
+      `Drinking Water Supply` == "Not Assessed" ~ 3,
+      `Drinking Water Supply` == "Not Evaluated In 2006" ~ 2,
+      `Drinking Water Supply` == "Water Not Classified For Drinking Supply" ~ 1,
+      TRUE ~ NA_real_
+    )
+  ) |>
+  filter(!is.na(aquatic_numeric) & !is.na(drinking_numeric))
+
+lakes_wide <- lakes_cleaned |>
+  pivot_wider(
+    id_cols = `305B ID`,
+    names_from = Cycle,
+    values_from = c(aquatic_numeric, drinking_numeric)
+  ) |>
+  drop_na()
+
+cor_matrix <- lakes_wide |>
+  select(
+    aquatic_numeric_2006,
+    drinking_numeric_2006,
+    aquatic_numeric_2012,
+    drinking_numeric_2012
+  ) |>
+  cor(method = "spearman")
+
+n_lakes <- nrow(lakes_wide)
+
+print("Spearman Correlations for aquatic life support and drinking water supply")
+print(paste("Number of matched lakes (n):", n_lakes))
+print(cor_matrix)
+```
+
+## Q1: Exploratory Data Analysis
+
+```{r}
+lakes_cleaned |>
+  ggplot(aes(x = drinking_numeric, y = aquatic_numeric, color = as.factor(Cycle))) +
+  geom_jitter(alpha = 0.5, width = 0.18, height = 0.18) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, linewidth = 1.2) +
+  scale_color_manual(values = c("2006" = "#56B4E9", "2012" = "#E69F00")) +
+  labs(
+    title = "Comparison of Trends: 2006 vs 2012",
+    x = "Drinking Water Supply Score",
+    y = "Aquatic Life Support Score",
+    color = "Evaluation Year"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+## Q2: Exploratory Data Analysis
+
+```{r}
+total_lakes_regions <- lakes_cleaned |>
+  separate_wider_regex(
+    cols = Name,
+    patterns = c(name = ".*?", " \\(", place = ".*?", "\\)"),
+    too_few = "align_start"
+  )
+
+water_impact <- total_lakes_regions |>
+  group_by(place, Cycle) |>
+  summarise(
+    mean_aquatic = mean(aquatic_numeric, na.rm = TRUE),
+    mean_drinking = mean(drinking_numeric, na.rm = TRUE),
+    .groups = "drop"
+  )
+district_1 <- water_impact |>
+  filter(
+    place %in% c(
+      "Bristol", "Colebrook", "Hartland", "Manchester", "Newington", "Portland", "Winchester"
+    ),
+    Cycle %in% c(2006, 2012)
+  )
+
+district_2 <- water_impact |>
+  filter(
+    place %in% c("Ashford", "Bozrah", "Brooklyn", "Chester", "Colchester", "Columbia", "Coventry", "Durham", "East Haddam", "East Hampton", "East Lyme", "Griswold", "Haddam", "Hebron", "Killingly", "Lebanon", "Ledyard", "Mansfield", "Marlborough", "North Stonington", "Norwich", "Plainfield", "Preston", "Somers", "Sprague", "Sterling", "Thompson", "Tolland", "Union", "Vernon", "Voluntown", "Woodstock"),
+    Cycle %in% c(2006, 2012)
+  )
+
+district_3 <- water_impact |>
+  filter(
+    place %in% c("Branford", "Derby", "Guilford", "Hamden", "New Haven", "North Branford", "Seymour", "Stratford", "Wallingford"),
+    Cycle %in% c(2006, 2012)
+  )
+
+district_4 <- water_impact |>
+  filter(
+    place %in% c("Bridgeport", "Fairfield", "Greenwich", "Ridgefield", "Wilton"),
+    Cycle %in% c(2006, 2012)
+  )
+
+district_5 <- water_impact |>
+  filter(
+    place %in% c("Canaan", "Cheshire", "Cornwall", "Danbury", "Goshen", "Kent", "Meriden", "New Fairfield", "Newtown", "Norfolk", "Plymouth", "Salisbury", "Sharon", "Simsbury", "Torrington", "Watertown", "Wolcott", "Woodbury"),
+    Cycle %in% c(2006, 2012)
+  )
+
+cong_dist_master <- bind_rows(
+  "district_1" = district_1,
+  "district_2" = district_2,
+  "district_3" = district_3,
+  "district_4" = district_4,
+  "district_5" = district_5,
+  .id = "group"
+)
+c_d_plot <- cong_dist_master |>
+  group_by(group, Cycle, place) |>
+  summarise(
+    avg_aquatic = mean(mean_aquatic, na.rm = TRUE),
+    avg_drinking = mean(mean_drinking, na.rm = TRUE), .groups = "drop"
+  )
+
+cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color = group)) +
+  geom_point(size = 3, alpha = 0.7, na.rm = TRUE) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.2, na.rm = TRUE) +
+  facet_wrap(~Cycle) +
+  scale_color_discrete(
+    labels = c(
+      "district_1" = "District 1",
+      "district_2" = "District 2",
+      "district_3" = "District 3",
+      "district_4" = "District 4",
+      "district_5" = "District 5"
+    )
+  ) +
+  labs(
+    title = "Aquatic Life vs. Drinking Water Correlation by District",
+    subtitle = "Varying line slopes indicate districts impact the correlation differently",
+    x = "Mean Drinking Water Supply Score",
+    y = "Mean Aquatic Life Support Score",
+    color = "Congressional District"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+cong_dist_plot1
+```
+
+## Q2: Exploratory Data Analysis
+
+```{r}
+district_correlations <- c_d_plot |>
+  group_by(group, Cycle) |>
+  summarise(
+    correlation = cor(
+      avg_drinking,
+      avg_aquatic,
+      method = "spearman",
+      use = "complete.obs"
+    ),
+    n = n(),
+    .groups = "drop"
+  )
+
+district_correlations
+```
+
+## Q3: Exploratory Data Analysis
+
+```{r}
+lakes_change <- six_lakes_aligned |>
+  left_join(
+    twelve_lakes_aligned,
+    by = "305B ID",
+    suffix = c("_2006", "_2012")
+  )
+lakes_change <- lakes_change |>
+  select(Name_2006, Name_2012, Shape__Length_2006, Shape__Length_2012, Shape__Area_2006, Shape__Area_2012) |>
+  mutate(length_ratio = Shape__Length_2012 / Shape__Length_2006, area_ratio = Shape__Area_2012 / Shape__Area_2006)
+
+lakes_change <- lakes_change |>
+  mutate(length_percent_change = (length_ratio - 1) * 100, area_percent_change = (area_ratio - 1) * 100)
+
+ggplot(lakes_change, aes(x = length_percent_change)) +
+  geom_histogram(bins = 30, fill = "steelblue") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Percent change in length", y = "Number of lakes", title = "Distribution of Changes in Lake Length from 2006 to 2012") +
+  theme_minimal()
+```
+
+## Q3: Exploratory Data Analysis
+
+```{r}
+ggplot(lakes_change, aes(x = area_percent_change)) +
+  geom_histogram(bins = 30, fill = "steelblue") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  labs(x = "Percent change in area", y = "Number of lakes", title = "Distribution of Changes in Lake Area from 2006 to 2012") +
+  theme_minimal()
+```
+
+## Q3: Exploratory Data Analysis
+
+```{r}
+t.test(
+  lakes_change$Shape__Length_2012,
+  lakes_change$Shape__Length_2006,
+  paired = TRUE
+)
+
+t.test(
+  lakes_change$Shape__Area_2012,
+  lakes_change$Shape__Area_2006,
+  paired = TRUE
+)
+```
+
+## Methods, Modeling, Results
+
+- Question: How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
+
+<!-- -->
+
+- (H₀): There is no association between aquatic life support and drinking water supply (rejected)
+
+- Visualization: Scatterplot showed a weak positive relationship
+
+- Spearman correlation, 2006: ρ = 0.111; Spearman correlation, 2012: ρ = 0.116
+
+- Assumption: Variables were ordinal rather than continuous
+
+## Methods, Modeling, Results
+
+- Question: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
+
+- H₀: Congressional district has no effect on the correlation between aquatic life support and drinking water supply
+
+- Visualization: Scatterplots for each congressional district for 2006 and 2012
+
+- Spearman correlations for districts 2–5 showed weak positive relationships, Correlations could not be calculated for District 1
+
+- Assumption: Ordinal data and monotonic relationship
+
+## Methods, Modeling, Results
+
+- Question: How have the length and area changed over time?
+
+- H₀: There was no change in lake length and area between 2006 and 2012
+
+- Visualization: Histograms of percent change for length and area
+
+- Paired t-test lake area:*t* = 0.134, *p* = 0.893; Paired t-test lake length: *t* = −2.085, *p* = 0.039
+
+- Assumption: Paired observations and normality of distribution
+
+## Data Driven Questions
+
+- Observation: A significant decrease in lake length was observed from 2006 to 2012
+
+- Question: How does drinking water supply affect lake length from 2006 to 2012?
+
+- Question: Does the reduction in lake length from 2006 to 2012 affect aquatic life support? 
+
+## Data Driven Questions
+
+- Observation: The data did not suggest impact of congressional district on aquatic life support and drinking water supply
+
+- Question: How is recreation affected by congressional district?
+
+## Data Driven Questions
+
+- Observation: Aquatic life support and drinking water supply had a very weak positive correlation
+
+- Question: What characteristics are associated with aquatic life as opposed to drinking water?
+
+- Question: What is the relationship between recreation and aquatic life support?
+
+## Discussion
+
+## References
+
+##  {.center}
+
+::: r-fit-text
+Thank You!
+:::
