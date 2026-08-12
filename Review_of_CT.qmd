@@ -422,7 +422,7 @@ t_test_results |>
 
 <!-- -->
 
-- (H₀): There is no association between aquatic life support and drinking water supply (rejected)
+- (H₀): There is no association between aquatic life support and drinking water supply
 
 - Visualization: Scatterplot showed a weak positive relationship
 
@@ -446,7 +446,7 @@ t_test_results |>
 
 - Question: How have the length and area changed over time?
 
-- H₀: There was no change in lake length and area between 2006 and 2012
+- H₀: There was no change in lake length and area between 2006 and 2012 (rejected)
 
 - Visualization: Histograms of percent change for length and area
 
