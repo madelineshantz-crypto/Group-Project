@@ -44,6 +44,11 @@ library(gt)
 
   - There is a lack of addressing the institutional aspects of water management.
 
+## Literature Review
+
+  - The literature review connects with our findings through overarching themes of human-driven watershed impacts, but it doesn't directly connect empirical alignment with our specific statistical data.
+
+
 ## Research Goals
 
 - Explore the correlation of aquatic life support and drinking water supply in the years 2006 and 2012
