@@ -476,7 +476,7 @@ t_test_results |>
 
 - Question: What is the relationship between recreation and aquatic life support?
 
-## Discussion: Question 1
+## Discussion: Question 1 {.smaller}
 
 - There is a slight visual positive correlation between Aquatic Life Support score and Drinking Water Supply score between 2006 and 2012 with 2012 having a greater positive correlation.
 - Based on the Spearman’s Correlation Test:
@@ -484,7 +484,7 @@ t_test_results |>
   - p-value in 2012 of 0.1568
 - There is no evidence of an association between aquatic life support and drinking water supply in CT lakes. We fail to reject the null hypothesis
 
-## Discussion: Question 2
+## Discussion: Question 2 {.smaller}
 
 - Slight visual positive correlation between Aquatic Life Support score and Drinking Water Supply score between both years and in all districts.
 - The major differences were between districts.
@@ -492,7 +492,7 @@ t_test_results |>
   - District 2 had the lowest Mean Drinking Water score out of all the districts in both years.
 - Based solely on the correlation coefficients, there is a very slight association between Aquatic Life Support score and region, but this is not strong evidence.
 
-## Discussion: Question 3
+## Discussion: Question 3 {.smaller}
 
 - Regarding the change in length of the lakes from 2006 to 2012, there was very little change.
 - The peak of the histogram:
