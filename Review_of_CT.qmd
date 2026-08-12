@@ -480,32 +480,30 @@ t_test_results |>
 
 - There is a slight visual positive correlation between Aquatic Life Support score and Drinking Water Supply score between 2006 and 2012 with 2012 having a greater positive correlation.
 - Based on the Spearman’s Correlation Test:
-    - p-value in 2006 of 0.1776
-    - p-value in 2012 of 0.1568
+  - p-value in 2006 of 0.1776
+  - p-value in 2012 of 0.1568
 - There is no evidence of an association between aquatic life support and drinking water supply in CT lakes. We fail to reject the null hypothesis
 
 ## Discussion: Question 2
 
-- Slight visual positive correlation between Aquatic Life Support score and Drinking Water Supply score between both years and in all districts. 
-- The major differences were between districts. 
-    - District 4 had the lowest Mean Aquatic Life Support score out of all the other districts in both years that were observed.
-    - District 2 had the lowest Mean Drinking Water score out of all the districts in both years.
+- Slight visual positive correlation between Aquatic Life Support score and Drinking Water Supply score between both years and in all districts.
+- The major differences were between districts.
+  - District 4 had the lowest Mean Aquatic Life Support score out of all the other districts in both years that were observed.
+  - District 2 had the lowest Mean Drinking Water score out of all the districts in both years.
 - Based solely on the correlation coefficients, there is a very slight association between Aquatic Life Support score and region, but this is not strong evidence.
-
 
 ## Discussion: Question 3
 
 - Regarding the change in length of the lakes from 2006 to 2012, there was very little change.
 - The peak of the histogram:
-    - 37 lakes, is just below 0.000, with the far left being -0.0125% change in length, and the far right being about +0.006% change in length between the years. 
+  - 37 lakes, is just below 0.000, with the far left being -0.0125% change in length, and the far right being about +0.006% change in length between the years.
 - The change in area of lakes was also very minimal.
-- The peak of the histogram: 
-    - Almost 80 lakes at 0.00% change in area between 2006 and 2012. The far left margin is about -0.0225% change in area, and the far right margin is about +0.0175% change in area. 
+- The peak of the histogram:
+  - Almost 80 lakes at 0.00% change in area between 2006 and 2012. The far left margin is about -0.0225% change in area, and the far right margin is about +0.0175% change in area.
 - The results of the paired t-test:
-- No significant change in lake length & area between 2006 and 2012
-We accept the null
-    - P-value for length: 0.0039 → significant
-    - P-value for area: 0.893 → insignificant 
+- No significant change in lake length & area between 2006 and 2012 We accept the null
+  - P-value for length: 0.0039 → significant
+  - P-value for area: 0.893 → insignificant
 
 ## References
 
