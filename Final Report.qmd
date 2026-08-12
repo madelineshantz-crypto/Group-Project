@@ -5,6 +5,8 @@ format: typst
 editor: visual
 bibliography: references.bib
 echo: false
+warning = FALSE
+message = FALSE
 ---
 
 ```{r}
@@ -63,8 +65,10 @@ Provide a list of detailed hypotheses. For example, you might believe that a cer
 - There is an association between the regions where the lakes are located and the impact on the aquatic life support and drinking water supply correlation.
 
 3.  How have the length and area changed over time?
-- H₀: There is no change in Lake size and length between 2006 and 2012.
-- Hₐ: There is a significant difference in Lake size and length between 2006 and 2012.
+
+- H₀: There was no change in lake length and area between 2006 and 2012.
+
+- Hₐ: There was change in lake length and area between 2006 and 2012.
 
 ## Exploratory Data Analysis:
 
@@ -154,8 +158,6 @@ lakes_cleaned |>
   theme(legend.position = "bottom")
 ```
 
-We fail to reject the null hypothesis claiming there is a correlation between aquatic life and drinking water supply. There is no statistical significant change in the correlation between lake aquatic life support and drinking water supply during the years 2006 and 2012 in Connecticut lakes as the p-value is greater than 0.05.
-
 ### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
 ```{r}
@@ -242,6 +244,7 @@ cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color
   )
 cong_dist_plot1
 ```
+
 ```{r}
 district_correlations <- c_d_plot |>
   group_by(group, Cycle) |>
@@ -254,14 +257,10 @@ district_correlations <- c_d_plot |>
     ),
     n = n(),
     .groups = "drop"
-    )
-```
+  )
+
 district_correlations
-In Congressional Districts 1, 3, and 5, the steepness of the lines suggests a song and positive relationship, as being almost identical in 2006 and 2012. District 4 has a lower baseline for aquatic life support, but it's slope is similar to Districts 1, 3 and 5.
-
-The major visual difference is in District 2, where in 2006 the line is much steeper, yet gets cut off short. This is likely due to there being no lakes that scored above around a 2.5 in the district on the Drinking Water Supply axis. In 2012, the line flattens out, appearing much less steep than the other districts within 2012.
-
-This graph visually suggests that the region does not heavily impact the correlation, except for the small restriction of range in District 2. The positive relationship between Aquatic Life and Drinking Water Supply behaves the same way regardless of which congressional district the lake is.
+```
 
 ### Question 3: How have the length and area changed over time?
 
@@ -312,29 +311,27 @@ t.test(
   paired = TRUE)
 ```
 
-We fail to reject the null hypothesis that there is no change in the length and area of the lakes between 2006 and 2012. There is a significant amount of change in lake length between 2006 and 2012. However, the change in area is not statistically significant. 
-
 ## Statistical Methods, Modeling, and Results:
 
-The first question investigated was how aquatic life support and drinking water supply were correlated in the years 2006 and 2012. The data was explored to find the rating systems for aquatic life support and drinking water supply. The categorical values ranging from fully supporting to not classified were then converted into numerical values 1-5. A scatterplot was used to visualize the relationships between aquatic life support and drinking water supply for 2006 and 2012. The scatterplot showed weak positive relationships for both years. Since the values were ordered variables, Spearman rank correlations were calculated for 2006 and 2012. Spearman Correlations confirmed a weak positive relationship between aquatic life support and drinking water supply for 2006 (ρ = 0.111), as well as for 2012 (ρ = 0.116). The null hypothesis stating there is no association between aquatic life support and drinking water supply was rejected. 
+The first question investigated was how aquatic life support and drinking water supply were correlated in the years 2006 and 2012. The data was explored to find the rating systems for aquatic life support and drinking water supply. The categorical values ranging from fully supporting to not classified were then converted into numerical values 1-5. A scatterplot was used to visualize the relationships between aquatic life support and drinking water supply for 2006 and 2012. The scatterplot showed weak positive relationships for both years. Since the values were ordered variables, spearman rank correlations were calculated for 2006 and 2012. Spearman Correlations confirmed a weak positive relationship between aquatic life support and drinking water supply for 2006 (ρ = 0.111), as well as for 2012 (ρ = 0.116). The null hypothesis stating there is no association between aquatic life support and drinking water supply was rejected. 
 
-The second question asked if the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation. The towns for each lake were extracted from Name. Then, the aquatic life support and drinking water supply scores were averaged for each place and year. Each town was assigned to a congressional district, and scatterplots were created to show the relationship between aquatic life support and drinking water supply for each district in 2006 and 2012. The scatterplots included regression lines for each district. Spearman correlations were calculated for each district to determine the correlation between aquatic life support and drinking water supply. Districts 2-5 all had weak positive relationships between aquatic life support and water supply. However, correlations could not be calculated for District 1 because one of the variables had no variation. The descriptive evidence suggests that the null hypothesis should not be rejected. The congressional district does not affect aquatic life support and drinking water supply. 
+The second question asked if the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation. The towns for each lake were extracted from Name. Then, the aquatic life support and drinking water supply scores were averaged for each place and year. Each town was assigned to a congressional district, and scatterplots were created to show the relationship between aquatic life support and drinking water supply for each district in 2006 and 2012. The scatterplots included regression lines for each district. Spearman correlations were calculated for each district to determine the correlation between aquatic life support and drinking water supply. Districts 2-5 all had weak positive relationships between aquatic life support and water supply. However, correlations could not be calculated for District 1 because one of the variables had no variation. The descriptive evidence suggests that the null hypothesis should not be rejected. The congressional district has no effect on aquatic life support and drinking water supply correlation. 
 
-The third question was whether the length and area of the lakes changed over time. To answer this question, histograms of percent change for length and area of all relevant lakes between 2006 and 2012 were created. These plots were used to visualize the distribution of length and area change. Since the same lakes were measured, a paired T–test was used to compare lake sizes from 2006 and 2012. There was no significant difference (t = 0.134, p-value = 0.893) in the lake area between 2006 and 2012. However, there was a significant difference (t = -2.085, p-value = 0.039) in lake length between 2006 and 2012. The mean length change for all lakes was determined to be -0.03, meaning the lakes decreased in length. Therefore, the null hypothesis that there was no change in the length of the lakes between 2006 and 2012 was rejected, while the null hypothesis that there was no change in the area of the lakes between 2006 and 2012 was not rejected. 
+The third question was whether the length and area of the lakes changed over time. To answer this question, histograms of percent change for length and area of all relevant lakes between 2006 and 2012 were created. These plots were used to visualize the distribution of length and area change. Since the same lakes were measured, a paired T–test was used to compare lake sizes from 2006 and 2012. There was no significant difference (t = 0.134, p-value = 0.893) in the lake area between 2006 and 2012. However, there was a significant difference (t = -2.085, p-value = 0.039) in lake length between 2006 and 2012. The mean length change for all lakes was determined to be -0.03, meaning the lakes decreased in length. Therefore, the null hypothesis that there was no change in the length of the lakes between 2006 and 2012 was rejected while the null hypothesis that there was no change in the area of the lakes between 2006 and 2012 not rejected.
 
 ## Data-driven Questions:
 
-A significant decrease in lake length was observed from 2006 to 2012. This raised questions about what factors contributed to the decrease in lake length, as well as what factors were affected by the decrease in lake length. Therefore, further investigation should consider how drinking water supply affects lake length from 2006 to 2012. It is hypothesized that there will be no effect of drinking water supply on lake length. Another question to be asked is if the reduction in lake length from 2006 to 2012 affects aquatic life support. 
-Additionally, the data did not suggest any impact of congressional district on aquatic life support and drinking water supply. However, further analysis should investigate how recreation is affected by congressional district. 
-Lastly, it was found that aquatic life support and drinking water supply had a very weak positive correlation. It is unclear why this is, but it is assumed that the characteristics that support aquatic life are not the same as requirements for drinking water. Additional inquiry should explore what characteristics are associated with aquatic life as opposed to drinking water. The relationship between aquatic life and recreation could also be investigated. 
+A significant decrease in lake length was observed from 2006 to 2012. This raised questions about what factors contributed to the decrease in lake length, as well as what factors were affected by the decrease in lake length. Therefore, further investigation should consider how drinking water supply affects lake length from 2006 to 2012. It is hypothesized that there will be no effect of drinking water supply on lake length. Another question to be asked is if the reduction in lake length from 2006 to 2012 affects aquatic life support. 
+
+Additionally, the data did not suggest any impact of congressional district on aquatic life support and drinking water supply. However, further analysis should investigate how recreation is affected by congressional district. 
+
+Lastly, it was found that aquatic life support and drinking water supply had a very weak positive correlation. It is unclear why this is, but it is assumed that the characteristics that support aquatic life are not the same as requirements for drinking water. Additional inquiry should explore what characteristics are associated with aquatic life as opposed to drinking water. The relationship between aquatic life and recreation could also be investigated.
 
 ## Discussion:
 
 A brief discussion of your results and how they may be placed in the context of the literature.
 
 ## References:
-
-\*She prefers APA
 
 Bashir, I., Lone, F. A., Bhat, R. A., Mir, S. A., Dar, Z. A., & Dar, S. A. (2020). Concerns and Threats of Contamination on Aquatic Ecosystems. Bioremediation and Biotechnology: Sustainable Approaches to Pollution Degradation, 1–26. https://doi.org/10.1007/978-3-030-35691-0_1
 
