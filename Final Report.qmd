@@ -242,7 +242,21 @@ cong_dist_plot1 <- ggplot(c_d_plot, aes(x = avg_drinking, y = avg_aquatic, color
   )
 cong_dist_plot1
 ```
-
+```{r}
+district_correlations <- c_d_plot |>
+  group_by(group, Cycle) |>
+  summarise(
+    correlation = cor(
+      avg_drinking,
+      avg_aquatic,
+      method = "spearman",
+      use = "complete.obs"
+    ),
+    n = n(),
+    .groups = "drop"
+    )
+```
+district_correlations
 In Congressional Districts 1, 3, and 5, the steepness of the lines suggests a song and positive relationship, as being almost identical in 2006 and 2012. District 4 has a lower baseline for aquatic life support, but it's slope is similar to Districts 1, 3 and 5.
 
 The major visual difference is in District 2, where in 2006 the line is much steeper, yet gets cut off short. This is likely due to there being no lakes that scored above around a 2.5 in the district on the Drinking Water Supply axis. In 2012, the line flattens out, appearing much less steep than the other districts within 2012.
