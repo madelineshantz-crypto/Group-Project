@@ -324,7 +324,9 @@ The third question was whether the length and area of the lakes changed over tim
 
 ## Data-driven Questions:
 
-What new questions (or hypotheses) have you developed as you explored the data? Provide some description of things that you found interesting when you were looking at the data.
+A significant decrease in lake length was observed from 2006 to 2012. This raised questions about what factors contributed to the decrease in lake length, as well as what factors were affected by the decrease in lake length. Therefore, further investigation should consider how drinking water supply affects lake length from 2006 to 2012. It is hypothesized that there will be no effect of drinking water supply on lake length. Another question to be asked is if the reduction in lake length from 2006 to 2012 affects aquatic life support. 
+Additionally, the data did not suggest any impact of congressional district on aquatic life support and drinking water supply. However, further analysis should investigate how recreation is affected by congressional district. 
+Lastly, it was found that aquatic life support and drinking water supply had a very weak positive correlation. It is unclear why this is, but it is assumed that the characteristics that support aquatic life are not the same as requirements for drinking water. Additional inquiry should explore what characteristics are associated with aquatic life as opposed to drinking water. The relationship between aquatic life and recreation could also be investigated. 
 
 ## Discussion:
 
