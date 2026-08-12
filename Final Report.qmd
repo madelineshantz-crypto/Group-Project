@@ -96,7 +96,7 @@ total_lakes
 
 ### Question 1: How are aquatic life support and drinking water supply correlated in the years 2006 and 2012?
 
-<!-- Maddy did all of question 1-->
+<!-- Maddy did all of question 1, Abby formatted the tables and added the Spearmans Correlation test to go along with the table-->
 
 ```{r}
 table(total_lakes$`Aquatic Life`)
@@ -168,7 +168,7 @@ lakes_cleaned |>
 
 ### Question 2: Do the congressional districts where the lakes are located have an impact on the aquatic life support and drinking water supply correlation?
 
-<!-- Maddy did the majority of the coding for question 2, and Sofia added the district_correlations to add the spearman correlation-->
+<!-- Maddy did the majority of the coding for question 2, and Sofia added the district_correlations to add the spearman correlation, Abby formatted the tables-->
 
 ```{r}
 total_lakes_regions <- lakes_cleaned |>
@@ -274,7 +274,7 @@ district_correlations
 
 ### Question 3: How have the length and area changed over time?
 
-<!-- Sofia did the entirety of question 3-->
+<!-- Sofia did the entirety of question 3, Abby formatted the tables-->
 
 ```{r}
 lakes_change <- six_lakes_aligned |>
@@ -345,7 +345,12 @@ Lastly, it was found that aquatic life support and drinking water supply had a v
 
 ## Discussion:
 
-A brief discussion of your results and how they may be placed in the context of the literature.
+<!-- Abby completed this section-->
+
+For question 1, there was a slight visual positive correlation between Aquatic Life Support score and Drinking Water Supply score between 2006 and 2012 with 2012 having a greater positive correlation. As Drinking Water Supply score increased, Aquatic Life Support score increased at a greater rate in 2012 than it did in 2006. Based on the Spearman’s Correlation Test, the p-value in 2006 of 0.1776 and the p-value in 2012 of 0.1568, there is no evidence of an association between aquatic life support and drinking water supply in CT lakes.
+For question 2, there was a slight positive correlation between Aquatic Life Support score and Drinking Water Supply score between both years and in all districts. While there were slight changes between the years of 2006 and 2012, the major differences were between districts. Notably, District 4 had the lowest Mean Aquatic Life Support score out of all the other districts in both years that were observed and District 2 had the lowest Mean Drinking Water score out of all the districts in both years. There is a very slight association between Aquatic Life Support score and region.
+For question 3 regarding the change in length of the lakes from 2006 to 2012, there was very little change. The peak of the histogram, about 37 lakes, is just below 0.000, with the far left being -0.0125% change in length, and the far right being about +0.006% change in length between the years. The change in area of lakes was also very minimal. The peak of the histogram showing percent area change is almost 80 lakes at 0.00% change in area between 2006 and 2012. The far left margin is about -0.0225% change in area, and the far right margin is about +0.0175% change in area. The results of the paired t-test show that there was not a significant change in lake length and area between 2006 and 2012. While the p-value for length was significant at 0.039, the p-value for area was large at 0.893, making the null hypothesis true.
+
 
 ## References:
 
