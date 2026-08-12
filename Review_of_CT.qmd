@@ -5,6 +5,7 @@ format:
   revealjs:
     theme: moon
 editor: visual
+echo: false
 ---
 
 ```{r}
